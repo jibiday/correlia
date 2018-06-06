@@ -1,7 +1,7 @@
 <ion-content padding style="height: 100%;">
   <ion-item>
 
-    <ion-label><ion-icon name="time"></ion-icon> Date</ion-label>
+    <ion-label><ion-icon name="calendar"></ion-icon></ion-label>
     <ion-datetime displayFormat="D MMMM YYYY HH:mm" pickerFormat="D MMMM YYYY HH:mm" [(ngModel)]="selectedDate"></ion-datetime>
   </ion-item>
 
@@ -26,7 +26,8 @@
   </ion-item>
 
   <ion-item>
-    <ion-input type="number" [(ngModel)]="selectedDose" placeholder="Medication, mg"></ion-input>
+    <ion-label>Medication, mg</ion-label>
+    <ion-input type="number" [(ngModel)]="selectedDose"></ion-input>
   </ion-item>
 
 </ion-content>
