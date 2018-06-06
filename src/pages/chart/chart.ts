@@ -25,6 +25,12 @@ export class ChartPage implements OnInit {
         labels: [],
       },
       options: {
+        responsive: true,
+        legend: {
+          labels: {
+            usePointStyle: true
+          }
+        },
         tooltips: {
           mode: 'x',
           displayColors: false,
@@ -48,15 +54,17 @@ export class ChartPage implements OnInit {
           yAxes: [
             {
               gridLines: {
-                display: false
+                display: true,
+                drawTicks: false
               },
               id: 'intensity',
               position: 'left',
               scaleLabel: {
-                display: true,
+                display: false,
                 labelString: 'intensity'
               },
               ticks: {
+                display: false,
                 beginAtZero: true
               }
             },
@@ -67,15 +75,63 @@ export class ChartPage implements OnInit {
               id: 'dosage',
               position: 'right',
               scaleLabel: {
-                display: true,
+                display: false,
+                fontSize: 9,
                 labelString: 'dosage'
               },
               ticks: {
+                display: false,
                 beginAtZero: true
               }
             }
           ]
         }
+      }
+    });
+    this.myChart.options.scales.yAxes[0].ticks.suggestedMax = 10;
+    this.drawPointLabels();
+
+  }
+
+  drawPointLabels() {
+    Chart.plugins.register({
+      afterDatasetsDraw: function(chart: any) {
+        let ctx = chart.ctx;
+
+        chart.data.datasets.forEach(function(dataset, i) {
+          let meta = chart.getDatasetMeta(i);
+          if (!meta.hidden) {
+            meta.data.forEach(function(element, index) {
+              console.log(element);
+              if (element._yScale.id == 'dosage') {
+                // Draw the text in black, with the specified font
+                ctx.fillStyle = 'rgb(0, 0, 0)';
+
+                let fontSize = 9;
+                let fontStyle = 'bold';
+                let fontFamily = 'Helvetica Neue';
+                ctx.font = Chart['helpers'].fontString(fontSize, fontStyle, fontFamily);
+
+                // Just naively convert to string for now
+                let dataString = dataset.data[index].y.toString();
+
+                // Make sure alignment settings are correct
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // let padding = 5;
+                let padding = 4;
+                let position = element.tooltipPosition();
+                ctx.fillStyle = element._model.backgroundColor;
+                // ctx.fillRect(position.x - 7, position.y - 7, 14, 14);
+                // ctx.arc(position.x, position.y, 8, 0, 2 * Math.PI, true);
+                // ctx.fillStyle = 'rgb(0, 0, 0)';
+                ctx.fillText(dataString, position.x - (fontSize / 2) - padding, position.y - (fontSize / 2) - padding);
+                // ctx.fillText(dataString, position.x, position.y);
+              }
+            });
+          }
+        });
       }
     });
   }

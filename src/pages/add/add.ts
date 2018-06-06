@@ -9,7 +9,7 @@ import * as moment from 'moment';
 })
 export class AddPage {
 
-  selectedDate = moment().format('YYYY-MM-DD');
+  selectedDate = moment().format('YYYY-MM-DDTHH:mm');
   selectedPain: number;
   selectedStress: number;
   selectedDose: number;
