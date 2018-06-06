@@ -26,7 +26,13 @@ export class ChartPage implements OnInit {
       },
       options: {
         responsive: true,
+        layout: {
+          padding: {
+            top: 15
+          }
+        },
         legend: {
+          position: 'bottom',
           labels: {
             usePointStyle: true
           }
