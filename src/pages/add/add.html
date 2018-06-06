@@ -1,0 +1,32 @@
+<ion-content padding style="height: 100%;">
+  <ion-item>
+    <ion-label>Date</ion-label>
+    <ion-datetime displayFormat="D MMMM YYYY" pickerFormat="D MMMM YYYY" [(ngModel)]="selectedDate"></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-toggle item-start></ion-toggle>
+    <ion-label>Pain</ion-label>
+    <ion-select [(ngModel)]="selectedPain" interface="action-sheet">
+      <ion-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10, 'нет']">{{i}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-toggle item-start></ion-toggle>
+    <ion-label>Stress</ion-label>
+    <ion-select [(ngModel)]="selectedStress" interface="action-sheet">
+      <ion-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10, 'нет']">{{i}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-toggle item-start></ion-toggle>
+    <ion-input type="number" [(ngModel)]="selectedDose" placeholder="Medication, mg"></ion-input>
+  </ion-item>
+
+</ion-content>
+
+<ion-footer>
+  <button ion-button block (click)="add()">add note</button>
+</ion-footer>
