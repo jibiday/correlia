@@ -67,6 +67,8 @@ export class HomePage implements OnInit {
       },
       options: {
         tooltips: {
+          mode: 'x',
+          displayColors: false,
           callbacks: {
             title: (tooltips, data) => {
               return moment(data['x']).format('D MMMM YYYY');
