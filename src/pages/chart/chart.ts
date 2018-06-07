@@ -16,6 +16,7 @@ export class ChartPage implements OnInit {
 
   ctx;
   myChart;
+  chartView: string = 'overall';
 
   ngOnInit() {
     this.ctx = 'myChart';

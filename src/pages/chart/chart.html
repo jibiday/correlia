@@ -1,3 +1,20 @@
 <ion-content style="height: 100%;" padding>
-  <canvas id="myChart" width="100%" height="100%"></canvas>
+  <ion-segment [(ngModel)]="chartView" color="primary">
+    <ion-segment-button value="overall">
+      Overall
+    </ion-segment-button>
+    <ion-segment-button value="day">
+      Day
+    </ion-segment-button>
+    <ion-segment-button value="week">
+      Week
+    </ion-segment-button>
+    <ion-segment-button value="month">
+      Month
+    </ion-segment-button>
+    <ion-segment-button value="year">
+      Year
+    </ion-segment-button>
+  </ion-segment>
+  <canvas  [hidden]="chartView !== 'overall'" id="myChart" width="100%" height="100%"></canvas>
 </ion-content>
