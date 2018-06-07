@@ -1,7 +1,18 @@
 import {Injectable} from '@angular/core';
+import {Storage} from '@ionic/storage'
 
 @Injectable()
 export class DatasetService {
+
+  constructor(private storage: Storage) {
+    this.storage.get('datas').then(datas => {
+      if(datas) {
+        this.datas = datas;
+      }
+    })
+  }
+
+  datas = [[],[],[],[],[],[]];
   datasets = [{
     label: 'pain',
     data: [],
@@ -82,16 +93,26 @@ export class DatasetService {
       yAxisID: 'dosage'
     }];
 
-  getByIndex(index: number) {
-    return this.datasets[index];
-  }
+  // getByIndex(index: number) {
+  //   return this.storage.get('datas').then(datas => {
+  //     return datas[index];
+  //   });
+  // }
 
   addByIndex(index: number, value: any) {
-    this.datasets[index].data.push(value);
-    this.datasets[index].data.sort((a, b) => a.x - b.x);
+    this.datas[index].push(value);
+    this.datas[index].sort((a, b) => a.x - b.x);
+    this.storage.set('datas', this.datas);
   }
 
   getAll() {
-    return this.datasets;
+    return this.storage.get('datas').then(datas => {
+      if(datas) {
+        [...this.datasets].forEach((dataset, index) => {
+          dataset.data = datas[index];
+        });
+      }
+      return [...this.datasets];
+    });
   }
 }

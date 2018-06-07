@@ -23,7 +23,7 @@ export class AddPage {
 
   add() {
     let wasAdded = false;
-    let date = moment(this.selectedDate);
+    let date = moment(this.selectedDate).toDate();
     if (!isNaN(this.selectedPain)) {
       this.datasetService.addByIndex(0, {x: date, y: this.selectedPain});
       wasAdded = true;
@@ -36,14 +36,14 @@ export class AddPage {
       this.datasetService.addByIndex(2,{x: date, y: this.selectedMood});
       wasAdded = true;
     }
-    if (!isNaN(this.selectedSleep.lower)) {
-      this.datasetService.addByIndex(3,{x: date, y: this.selectedSleep.lower});
-      wasAdded = true;
-    }
-    if (!isNaN(this.selectedSleep.upper)) {
-      this.datasetService.addByIndex(4,{x: date, y: this.selectedSleep.upper});
-      wasAdded = true;
-    }
+    // if (!isNaN(this.selectedSleep.lower)) {
+    //   this.datasetService.addByIndex(3,{x: date, y: this.selectedSleep.lower});
+    //   wasAdded = true;
+    // }
+    // if (!isNaN(this.selectedSleep.upper)) {
+    //   this.datasetService.addByIndex(4,{x: date, y: this.selectedSleep.upper});
+    //   wasAdded = true;
+    // }
     if (!isNaN(this.selectedDose)) {
       this.datasetService.addByIndex(5,{x: date, y: this.selectedDose});
       wasAdded = true;
@@ -52,7 +52,7 @@ export class AddPage {
     if (wasAdded) {
       let toast = this.toastCtrl.create({
         message: 'Note was added successfully',
-        duration: 2000,
+        duration: 1500,
         position: 'top'
       });
       toast.present();

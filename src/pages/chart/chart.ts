@@ -103,13 +103,13 @@ export class ChartPage implements OnInit {
 
   drawPointLabels() {
     Chart.plugins.register({
-      afterDatasetsDraw: function(chart: any) {
+      afterDatasetsDraw: (chart: any) => {
         let ctx = chart.ctx;
 
-        chart.data.datasets.forEach(function(dataset, i) {
+        chart.data.datasets.forEach((dataset, i) => {
           let meta = chart.getDatasetMeta(i);
           if (!meta.hidden) {
-            meta.data.forEach(function(element, index) {
+            meta.data.forEach((element, index) => {
               if (element._yScale.id == 'dosage') {
                 // Draw the text in black, with the specified font
                 ctx.fillStyle = 'rgb(0, 0, 0)';
@@ -144,7 +144,9 @@ export class ChartPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.myChart.data.datasets = this.datasetService.getAll();
-    this.myChart.update();
+    this.datasetService.getAll().then(datasets => {
+      this.myChart.data.datasets = datasets;
+      this.myChart.update();
+    });
   }
 }
