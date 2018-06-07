@@ -32,7 +32,7 @@ export class AddPage {
       wasAdded = true;
     }
     if (!isNaN(this.selectedMood)) {
-      this.datasetService.addByIndex(2,{x: date, y: this.selectedDose});
+      this.datasetService.addByIndex(2,{x: date, y: this.selectedMood});
       wasAdded = true;
     }
     if (!isNaN(this.selectedDose)) {
