@@ -29,6 +29,19 @@ export class DatasetService {
       yAxisID: 'intensity'
     },
     {
+      label: 'mood',
+      data: [],
+      backgroundColor: [
+        '#F9C901'
+        ],
+      borderColor: [
+        '#F9C901'
+        ],
+      fill: false,
+      borderWidth: 2,
+      yAxisID: 'intensity'
+    },
+    {
       label: 'dosage',
       data: [],
       backgroundColor: [

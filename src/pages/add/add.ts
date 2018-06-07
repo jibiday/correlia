@@ -13,6 +13,7 @@ export class AddPage {
   selectedPain: number;
   selectedStress: number;
   selectedDose: number;
+  selectedMood: number;
 
   constructor(public navCtrl: NavController,
               private toastCtrl: ToastController,
@@ -30,8 +31,12 @@ export class AddPage {
       this.datasetService.addByIndex(1,{x: date, y: this.selectedStress});
       wasAdded = true;
     }
-    if (!isNaN(this.selectedDose)) {
+    if (!isNaN(this.selectedMood)) {
       this.datasetService.addByIndex(2,{x: date, y: this.selectedDose});
+      wasAdded = true;
+    }
+    if (!isNaN(this.selectedDose)) {
+      this.datasetService.addByIndex(3,{x: date, y: this.selectedDose});
       wasAdded = true;
     }
 
