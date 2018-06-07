@@ -44,7 +44,7 @@ export class ChartPage implements OnInit {
           displayColors: false,
           callbacks: {
             title: (tooltips, data) => {
-              return moment(data['x']).format('D MMMM YYYY HH:mm');
+              return moment(tooltips[0].xLabel).format('D MMMM YYYY HH:mm');
             }
           }
         },
