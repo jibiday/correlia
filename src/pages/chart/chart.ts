@@ -109,7 +109,6 @@ export class ChartPage implements OnInit {
           let meta = chart.getDatasetMeta(i);
           if (!meta.hidden) {
             meta.data.forEach(function(element, index) {
-              console.log(element);
               if (element._yScale.id == 'dosage') {
                 // Draw the text in black, with the specified font
                 ctx.fillStyle = 'rgb(0, 0, 0)';

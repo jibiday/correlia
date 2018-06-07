@@ -6,35 +6,30 @@
   </ion-item>
 
   <ion-item>
-    <ion-label><ion-icon name="pulse"></ion-icon>  Pain</ion-label>
-    <!--<button ion-button clear item-content (click)="addNote()">-->
-    <!--<ion-icon name="create"></ion-icon>-->
-    <!--</button>-->
-    <!--<button ion-button clear item-content (click)="addNote()">-->
-    <!--<ion-icon name="camera"></ion-icon>-->
-    <!--</button>-->
-    <ion-select [(ngModel)]="selectedPain" interface="action-sheet">
-      <ion-option *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10, 'нет']">{{i}}</ion-option>
-    </ion-select>
+    <ion-range pin="true" min="0" max="10" step="1" snaps="true" color="danger" [(ngModel)]="selectedPain">
+      <ion-icon color="danger" large range-left name="remove"></ion-icon>
+      <ion-icon color="danger" range-right name="pulse"></ion-icon>
+    </ion-range>
   </ion-item>
 
   <ion-item>
-    <ion-label><ion-icon name="flash"></ion-icon> Stress</ion-label>
-    <ion-select [(ngModel)]="selectedStress" interface="action-sheet">
-      <ion-option *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10, 'нет']">{{i}}</ion-option>
-    </ion-select>
+    <ion-range pin="true" min="0" max="10" step="1" snaps="true" color="primary" [(ngModel)]="selectedStress">
+      <ion-icon color="primary" range-left name="cloud"></ion-icon>
+      <ion-icon color="primary" range-right name="flash"></ion-icon>
+
+    </ion-range>
   </ion-item>
 
   <ion-item>
-    <ion-label><ion-icon name="happy"></ion-icon> Mood</ion-label>
-    <ion-select [(ngModel)]="selectedMood" interface="action-sheet">
-      <ion-option *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10, 'нет']">{{i}}</ion-option>
-    </ion-select>
+    <ion-range pin="true" min="0" max="10" step="1" snaps="true" color="mood" [(ngModel)]="selectedMood">
+      <ion-icon color="mood" range-left name="sad"></ion-icon>
+      <ion-icon color="mood" range-right name="happy"></ion-icon>
+    </ion-range>
   </ion-item>
 
   <ion-item>
-    <ion-label>Medication, mg</ion-label>
-    <ion-input type="number" [(ngModel)]="selectedDose"></ion-input>
+  <ion-label><ion-icon name="medkit"></ion-icon> Medication, mg:</ion-label>
+  <ion-input type="number" [(ngModel)]="selectedDose"></ion-input>
   </ion-item>
 
 </ion-content>
