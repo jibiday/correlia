@@ -42,6 +42,32 @@ export class DatasetService {
       yAxisID: 'intensity'
     },
     {
+      label: 'start sleep',
+      data: [],
+      backgroundColor: [
+        'rgba(9,9,9,0.2)'
+        ],
+      borderColor: [
+        'rgba(9,9,9,0.2)'
+        ],
+      fill: 4,
+      borderWidth: 2,
+      yAxisID: 'intensity'
+    },
+    {
+      label: 'wake',
+      data: [],
+      backgroundColor: [
+        'rgba(9,9,9,0.2)'
+        ],
+      borderColor: [
+        'rgba(9,9,9,0.2)'
+        ],
+      fill: false,
+      borderWidth: 2,
+      yAxisID: 'intensity'
+    },
+    {
       label: 'dosage',
       data: [],
       backgroundColor: [

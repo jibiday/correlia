@@ -14,6 +14,7 @@ export class AddPage {
   selectedStress: number;
   selectedDose: number;
   selectedMood: number;
+  selectedSleep = {lower: -2.0, upper: 8.0};
 
   constructor(public navCtrl: NavController,
               private toastCtrl: ToastController,
@@ -35,8 +36,16 @@ export class AddPage {
       this.datasetService.addByIndex(2,{x: date, y: this.selectedMood});
       wasAdded = true;
     }
+    if (!isNaN(this.selectedSleep.lower)) {
+      this.datasetService.addByIndex(3,{x: date, y: this.selectedSleep.lower});
+      wasAdded = true;
+    }
+    if (!isNaN(this.selectedSleep.upper)) {
+      this.datasetService.addByIndex(4,{x: date, y: this.selectedSleep.upper});
+      wasAdded = true;
+    }
     if (!isNaN(this.selectedDose)) {
-      this.datasetService.addByIndex(3,{x: date, y: this.selectedDose});
+      this.datasetService.addByIndex(5,{x: date, y: this.selectedDose});
       wasAdded = true;
     }
 
