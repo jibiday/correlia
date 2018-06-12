@@ -12,6 +12,10 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {DatasetService} from '../services/datasetService';
 import {IonicStorageModule} from "@ionic/storage";
+import {AngularFireModule} from "angularfire2";
+import {config} from "./app.firebaseconfig";
+import {AuthService} from "../services/authService";
+import {AngularFireAuth} from "angularfire2/auth";
 
 @NgModule({
   declarations: [
@@ -24,7 +28,8 @@ import {IonicStorageModule} from "@ionic/storage";
   imports: [
     BrowserModule,
     IonicStorageModule.forRoot(),
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(config)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -38,6 +43,8 @@ import {IonicStorageModule} from "@ionic/storage";
     StatusBar,
     SplashScreen,
     DatasetService,
+    AuthService,
+    AngularFireAuth,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
