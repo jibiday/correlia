@@ -21,6 +21,10 @@ export class AddPage {
               private datasetService: DatasetService) {
   }
 
+  ionViewWillEnter() {
+    this.selectedDate = moment().format('YYYY-MM-DDTHH:mm');
+  }
+
   add() {
     let wasAdded = false;
     let date = moment(this.selectedDate).toDate();

@@ -1,23 +1,34 @@
 <ion-content padding style="height: 100%;">
-  <ion-item>
-    <ion-label>
-      <ion-icon name="calendar"></ion-icon>
-    </ion-label>
-    <ion-datetime displayFormat="D MMMM YYYY HH:mm" pickerFormat="D MMMM YYYY HH:mm"
-                  [(ngModel)]="selectedDate"></ion-datetime>
-  </ion-item>
+  <ion-list>
+    <ion-item-sliding>
+      <ion-item>
+        <ion-label>
+          <ion-icon name="calendar"></ion-icon>
+        </ion-label>
+        <ion-datetime displayFormat="D MMMM YYYY HH:mm" pickerFormat="D MMMM YYYY HH:mm"
+                      [(ngModel)]="selectedDate"></ion-datetime>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button>Unread</button>
+      </ion-item-options>
+    </ion-item-sliding>
 
-  <ion-item no-lines [style.backgroundColor]="selectedPain || selectedPain === 0 ? '#ebeee5' : ''">
-    <ion-range pin min="0" max="10" step="1" snaps="true" color="danger" [(ngModel)]="selectedPain">
-      <div style="width: 20px;" range-left>
-        <ion-icon color="danger" large [name]="selectedPain || selectedPain === 0 ? 'trash' : 'remove'"
-                  (click)="selectedPain = null"></ion-icon>
-      </div>
-      <div style="width: 20px;" range-right="">
-        <ion-icon color="danger" name="pulse"></ion-icon>
-      </div>
-    </ion-range>
-  </ion-item>
+    <ion-item-sliding>
+      <ion-item no-lines [style.backgroundColor]="selectedPain || selectedPain === 0 ? '#ebeee5' : ''">
+        <ion-range pin min="0" max="10" step="1" snaps="true" color="danger" [(ngModel)]="selectedPain">
+          <div style="width: 20px;" range-left>
+            <ion-icon color="danger" large [name]="selectedPain || selectedPain === 0 ? 'trash' : 'remove'"
+                      (click)="selectedPain = null"></ion-icon>
+          </div>
+          <div style="width: 20px;" range-right="">
+            <ion-icon color="danger" name="pulse"></ion-icon>
+          </div>
+        </ion-range>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button>Edit</button>
+      </ion-item-options>
+    </ion-item-sliding>
 
   <ion-item no-lines [style.backgroundColor]="selectedStress || selectedStress === 0 ? '#ebeee5' : ''">
     <ion-range pin min="0" max="10" step="1" snaps="true" color="primary" [(ngModel)]="selectedStress">
@@ -62,7 +73,7 @@
     </ion-label>
     <ion-input type="number" [(ngModel)]="selectedDose"></ion-input>
   </ion-item>
-
+  </ion-list>
 </ion-content>
 
 <ion-footer>
