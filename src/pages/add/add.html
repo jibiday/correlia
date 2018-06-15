@@ -7,38 +7,52 @@
                   [(ngModel)]="selectedDate"></ion-datetime>
   </ion-item>
 
-  <ion-item no-lines>
-    <ion-range pin="true" min="0" max="10" step="1" snaps="true" color="danger" [(ngModel)]="selectedPain">
-      <ion-icon color="danger" large range-left name="remove"></ion-icon>
-      <ion-icon color="danger" range-right name="pulse"></ion-icon>
+  <ion-item no-lines [style.backgroundColor]="selectedPain || selectedPain === 0 ? '#ebeee5' : ''">
+    <ion-range pin min="0" max="10" step="1" snaps="true" color="danger" [(ngModel)]="selectedPain">
+      <div style="width: 20px;" range-left>
+        <ion-icon color="danger" large [name]="selectedPain || selectedPain === 0 ? 'trash' : 'remove'"
+                  (click)="selectedPain = null"></ion-icon>
+      </div>
+      <div style="width: 20px;" range-right="">
+        <ion-icon color="danger" name="pulse"></ion-icon>
+      </div>
     </ion-range>
   </ion-item>
 
-  <ion-item no-lines>
-    <ion-range pin="true" min="0" max="10" step="1" snaps="true" color="primary" [(ngModel)]="selectedStress">
-      <ion-icon color="primary" range-left name="cloud"></ion-icon>
-      <ion-icon color="primary" range-right name="flash"></ion-icon>
-
+  <ion-item no-lines [style.backgroundColor]="selectedStress || selectedStress === 0 ? '#ebeee5' : ''">
+    <ion-range pin min="0" max="10" step="1" snaps="true" color="primary" [(ngModel)]="selectedStress">
+      <div style="width: 20px;" range-left>
+        <ion-icon color="primary" [name]="selectedStress || selectedStress === 0 ? 'trash' : 'cloud'"
+                  (click)="selectedStress = null"></ion-icon>
+      </div>
+      <div style="width: 20px;" range-right>
+        <ion-icon color="primary" name="flash"></ion-icon>
+      </div>
     </ion-range>
   </ion-item>
 
-  <ion-item no-lines>
-    <ion-range pin="true" min="0" max="10" step="1" snaps="true" color="mood" [(ngModel)]="selectedMood">
-      <ion-icon color="mood" range-left name="sad"></ion-icon>
-      <ion-icon color="mood" range-right name="happy"></ion-icon>
+  <ion-item no-lines [style.backgroundColor]="selectedMood || selectedMood === 0 ? '#ebeee5' : ''">
+    <ion-range pin min="0" max="10" step="1" snaps="true" color="mood" [(ngModel)]="selectedMood">
+      <div style="width: 20px;" range-left>
+        <ion-icon color="mood" [name]="selectedMood || selectedMood === 0 ? 'trash' : 'sad'"
+                  (click)="selectedMood = null"></ion-icon>
+      </div>
+      <div style="width: 20px;" range-right>
+        <ion-icon color="mood" name="happy"></ion-icon>
+      </div>
     </ion-range>
   </ion-item>
 
   <!--<ion-item no-lines>-->
-    <!--<ion-range dualKnobs="true" min="-6" max="15" [step]="0.5" snaps="true" color="dark" [(ngModel)]="selectedSleep">-->
-      <!--<ion-icon color="dark" range-left name="ios-moon-outline"></ion-icon>-->
-      <!--<ion-icon color="dark" range-right name="ios-sunny-outline"></ion-icon>-->
-    <!--</ion-range>-->
+  <!--<ion-range dualKnobs="true" min="-6" max="15" [step]="0.5" snaps="true" color="dark" [(ngModel)]="selectedSleep">-->
+  <!--<ion-icon color="dark" range-left name="ios-moon-outline"></ion-icon>-->
+  <!--<ion-icon color="dark" range-right name="ios-sunny-outline"></ion-icon>-->
+  <!--</ion-range>-->
   <!--</ion-item>-->
 
   <!--<ion-item>-->
-    <!--<span item-start>{{selectedSleep.lower > 0 ? selectedSleep.lower : selectedSleep.lower + 24}}:00</span>-->
-    <!--<span item-end>{{selectedSleep.upper > 0 ? selectedSleep.upper : selectedSleep.upper + 24}}:00</span>-->
+  <!--<span item-start>{{selectedSleep.lower > 0 ? selectedSleep.lower : selectedSleep.lower + 24}}:00</span>-->
+  <!--<span item-end>{{selectedSleep.upper > 0 ? selectedSleep.upper : selectedSleep.upper + 24}}:00</span>-->
   <!--</ion-item>-->
 
   <ion-item>
