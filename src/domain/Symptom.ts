@@ -1,11 +1,21 @@
-export class Symptom {
+export class Note {
   id: number;
   intensity: number;
-  name: string;
-  color: string;
   date: string;
-  time: string;
-  duration: number;
-  type: string;
-  note: string;
+  value: Value;
+  comment: string;
+}
+
+export class Value {
+  id: number;
+  name: string;
+  min: number;
+  max: number;
+  color: string;
+  icon: string;
+  chartType: string = 'line';
+}
+
+export class Point {
+
 }
