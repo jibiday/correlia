@@ -16,11 +16,16 @@ import {AngularFireModule} from "angularfire2";
 import {config} from "./app.firebaseconfig";
 import {AuthService} from "../services/authService";
 import {AngularFireAuth} from "angularfire2/auth";
+import {AddValuePage} from "../pages/add-value/add-value";
+import {ValuesListPage} from "../pages/values-list/values-list";
+import {ColorPickerModule} from "ngx-color-picker";
 
 @NgModule({
   declarations: [
     MyApp,
     AddPage,
+    AddValuePage,
+    ValuesListPage,
     ContactPage,
     ChartPage,
     TabsPage
@@ -29,6 +34,7 @@ import {AngularFireAuth} from "angularfire2/auth";
     BrowserModule,
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp),
+    ColorPickerModule,
     AngularFireModule.initializeApp(config)
   ],
   bootstrap: [IonicApp],
@@ -37,6 +43,8 @@ import {AngularFireAuth} from "angularfire2/auth";
     AddPage,
     ContactPage,
     ChartPage,
+    AddValuePage,
+    ValuesListPage,
     TabsPage
   ],
   providers: [

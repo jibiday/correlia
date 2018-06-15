@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Add new value</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-label>
+      Name:
+    </ion-label>
+    <ion-input type="text" [(ngModel)]="name"></ion-input>
+  </ion-item>
+  <button ion-item
+          [cpPosition]="'bottom'"
+          [(colorPicker)]="color">
+    <ion-icon name="square" item-end large [style.color]="color"></ion-icon>
+    <ion-label>
+    Color: {{color}}
+    </ion-label>
+  </button>
+</ion-content>
