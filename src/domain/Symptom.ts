@@ -9,8 +9,8 @@ export class Note {
 export class Value {
   id: number;
   name: string;
-  min: number;
-  max: number;
+  min: number = 0;
+  max: number = 10;
   color: string;
   icon: string;
   chartType: string = 'line';

@@ -11,14 +11,12 @@ import {TabsPage} from '../pages/tabs/tabs';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {DatasetService} from '../services/datasetService';
-import {IonicStorageModule} from "@ionic/storage";
-import {AngularFireModule} from "angularfire2";
-import {config} from "./app.firebaseconfig";
-import {AuthService} from "../services/authService";
-import {AngularFireAuth} from "angularfire2/auth";
-import {AddValuePage} from "../pages/add-value/add-value";
-import {ValuesListPage} from "../pages/values-list/values-list";
-import {ColorPickerModule} from "ngx-color-picker";
+import {IonicStorageModule} from '@ionic/storage';
+import {AuthService} from '../services/authService';
+import {AddValuePage} from '../pages/add-value/add-value';
+import {ValuesListPage} from '../pages/values-list/values-list';
+import {ColorPickerModule} from 'ngx-color-picker';
+import {ValueProvider} from '../providers/value/value';
 
 @NgModule({
   declarations: [
@@ -34,8 +32,7 @@ import {ColorPickerModule} from "ngx-color-picker";
     BrowserModule,
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp),
-    ColorPickerModule,
-    AngularFireModule.initializeApp(config)
+    ColorPickerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -52,8 +49,8 @@ import {ColorPickerModule} from "ngx-color-picker";
     SplashScreen,
     DatasetService,
     AuthService,
-    AngularFireAuth,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ValueProvider
   ]
 })
 export class AppModule {}

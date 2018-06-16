@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {AuthService} from "../../services/authService";
+import {AuthService} from '../../services/authService';
 
 @Component({
   selector: 'page-contact',
@@ -14,7 +14,7 @@ export class ContactPage {
 
   }
 
-  googleSignIn() {
-    this.authService.login();
-  }
+  // googleSignIn() {
+  //   this.authService.login();
+  // }
 }
