@@ -10,7 +10,9 @@ import {ValueProvider} from '../../providers/value/value';
 export class AddValuePage {
 
   name: string;
-  color: string = '#00a2ff';
+  color: string = '#0af';
+  min = 0;
+  max = 10;
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private toastCtrl: ToastController,
               private valueProvider: ValueProvider) {
@@ -25,6 +27,8 @@ export class AddValuePage {
     value.id = new Date().valueOf();
     value.name = this.name;
     value.color = this.color;
+    value.min = this.min;
+    value.max = this.max;
     this.valueProvider.save(value);
     let toast = this.toastCtrl.create({
       message: 'Value was saved successfully',

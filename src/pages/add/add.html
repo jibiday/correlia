@@ -27,7 +27,7 @@
         <ion-range pin min="0" max="10" step="1" snaps="true" color="danger" [(ngModel)]="selectedPain">
           <div style="width: 20px;" range-left>
             <ion-icon color="danger" large [name]="selectedPain || selectedPain === 0 ? 'trash' : 'remove'"
-                      (click)="selectedPain = null"></ion-icon>
+                      (click)="selectedPain = undefined"></ion-icon>
           </div>
           <div style="width: 20px;" range-right="">
             <ion-icon color="danger" name="pulse"></ion-icon>
@@ -43,7 +43,7 @@
     <ion-range pin min="0" max="10" step="1" snaps="true" color="primary" [(ngModel)]="selectedStress">
       <div style="width: 20px;" range-left>
         <ion-icon color="primary" [name]="selectedStress || selectedStress === 0 ? 'trash' : 'cloud'"
-                  (click)="selectedStress = null"></ion-icon>
+                  (click)="selectedStress = undefined"></ion-icon>
       </div>
       <div style="width: 20px;" range-right>
         <ion-icon color="primary" name="flash"></ion-icon>
@@ -55,7 +55,7 @@
     <ion-range pin min="0" max="10" step="1" snaps="true" color="mood" [(ngModel)]="selectedMood">
       <div style="width: 20px;" range-left>
         <ion-icon color="mood" [name]="selectedMood || selectedMood === 0 ? 'trash' : 'sad'"
-                  (click)="selectedMood = null"></ion-icon>
+                  (click)="selectedMood = undefined"></ion-icon>
       </div>
       <div style="width: 20px;" range-right>
         <ion-icon color="mood" name="happy"></ion-icon>
