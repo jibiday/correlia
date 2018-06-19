@@ -1,9 +1,12 @@
 export class Note {
   id: number;
-  intensity: number;
-  date: string;
-  value: Value;
+  date: Date;
+  points: Point[] = [];
   comment: string;
+
+  constructor(date: Date) {
+    this.date = date;
+  }
 }
 
 export class Value {
@@ -14,8 +17,18 @@ export class Value {
   color: string;
   icon: string;
   chartType: string = 'line';
+  tempIntensity?: number;
 }
 
 export class Point {
+  x: Date;
+  y: number;
+  value: Value;
+  valueId: number;
 
+  constructor(x: Date, y: number, valueId: number) {
+    this.x = x;
+    this.y = y;
+    this.valueId = valueId;
+  }
 }

@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import * as Chart from 'chart.js';
 import * as moment from 'moment';
-import {DatasetService} from '../../services/datasetService';
+import {PointProvider} from "../../providers/point/point";
+import {Point, Value} from "../../domain/Symptom";
+import {ValueProvider} from "../../providers/value/value";
 
 @Component({
   selector: 'page-chart',
@@ -11,21 +13,22 @@ import {DatasetService} from '../../services/datasetService';
 export class ChartPage implements OnInit {
 
   constructor(public navCtrl: NavController,
-              private datasetService: DatasetService) {
+              private pointProvider: PointProvider,
+              private valueProvider: ValueProvider) {
   }
 
   ctx;
   myChart;
   chartView = 'overall';
+  points: Point[] = [];
+  values: Value[] = [];
+  datasets: Dataset[] = [];
 
   ngOnInit() {
     this.chartView = 'overall';
     this.ctx = 'myChart';
     this.myChart = new Chart(this.ctx, {
       type: 'line',
-      data: {
-        labels: [],
-      },
       options: {
         responsive: true,
         layout: {
@@ -97,8 +100,60 @@ export class ChartPage implements OnInit {
       }
     });
     this.myChart.options.scales.yAxes[0].ticks.suggestedMax = 10;
-    this.drawPointLabels();
+    this.datasets.forEach(dataset => {
+      this.myChart.data.datasets.push({
+        label: dataset.value.name,
+        data: dataset.points,
+        backgroundColor: [
+          dataset.value.color
+        ],
+        borderColor: [
+          dataset.value.color
+        ],
+        fill: false,
+        borderWidth: 2,
+        yAxisID: 'intensity'
+      })
+    });
 
+    // this.drawPointLabels();
+
+  }
+
+ updateDatasets() {
+   this.datasets = [];
+   this.pointProvider.getAll().then(points => {
+     this.points = points;
+     this.valueProvider.getAll().then(values => {
+       this.values = values;
+       this.points.forEach(point => {
+         let dataset = this.datasets.find(dataset => dataset.value.id === point.valueId);
+         if (!dataset) {
+           dataset = new Dataset();
+           dataset.value = this.values.find(val => val.id === point.valueId);
+           this.datasets.push(dataset);
+         }
+         dataset.points.push(point);
+       });
+       this.myChart.data.datasets = [];
+       this.datasets.forEach(dataset => {
+         this.myChart.data.datasets.push({
+           label: dataset.value.name,
+           data: dataset.points,
+           backgroundColor: [
+             dataset.value.color
+           ],
+           borderColor: [
+             dataset.value.color
+           ],
+           fill: false,
+           borderWidth: 2,
+           yAxisID: 'intensity'
+         })
+       });
+       this.myChart.update();
+     });
+   });
   }
 
   drawPointLabels() {
@@ -144,9 +199,11 @@ export class ChartPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.datasetService.getAll().then(datasets => {
-      this.myChart.data.datasets = datasets;
-      this.myChart.update();
-    });
+    this.updateDatasets();
   }
+}
+
+export class Dataset {
+  value: Value;
+  points: Point[] = [];
 }

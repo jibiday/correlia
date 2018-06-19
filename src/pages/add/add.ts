@@ -1,7 +1,10 @@
 import {Component} from '@angular/core';
 import {NavController, ToastController} from 'ionic-angular';
-import {DatasetService} from '../../services/datasetService';
 import * as moment from 'moment';
+import {NoteProvider} from "../../providers/note/note";
+import {PointProvider} from "../../providers/point/point";
+import {ValueProvider} from "../../providers/value/value";
+import {Note, Point, Value} from "../../domain/Symptom";
 
 @Component({
   selector: 'page-add',
@@ -9,51 +12,40 @@ import * as moment from 'moment';
 })
 export class AddPage {
 
+  values: Value[];
   selectedDate = moment().format('YYYY-MM-DDTHH:mm');
-  selectedPain: number;
-  selectedStress: number;
-  selectedDose: number;
-  selectedMood: number;
-  selectedSleep = {lower: -2.0, upper: 8.0};
 
   constructor(public navCtrl: NavController,
               private toastCtrl: ToastController,
-              private datasetService: DatasetService) {
+              private noteProvider: NoteProvider,
+              private pointProvider: PointProvider,
+              private valueProvider: ValueProvider) {
   }
 
   ionViewWillEnter() {
     this.selectedDate = moment().format('YYYY-MM-DDTHH:mm');
+    this.valueProvider.getAll().then(values => {
+      this.values = values;
+    })
   }
 
   add() {
     let wasAdded = false;
     let date = moment(this.selectedDate).toDate();
-    if (!isNaN(this.selectedPain)) {
-      this.datasetService.addByIndex(0, {x: date, y: this.selectedPain});
-      wasAdded = true;
-    }
-    if (!isNaN(this.selectedStress)) {
-      this.datasetService.addByIndex(1,{x: date, y: this.selectedStress});
-      wasAdded = true;
-    }
-    if (!isNaN(this.selectedMood)) {
-      this.datasetService.addByIndex(2,{x: date, y: this.selectedMood});
-      wasAdded = true;
-    }
-    // if (!isNaN(this.selectedSleep.lower)) {
-    //   this.datasetService.addByIndex(3,{x: date, y: this.selectedSleep.lower});
-    //   wasAdded = true;
-    // }
-    // if (!isNaN(this.selectedSleep.upper)) {
-    //   this.datasetService.addByIndex(4,{x: date, y: this.selectedSleep.upper});
-    //   wasAdded = true;
-    // }
-    if (!isNaN(this.selectedDose)) {
-      this.datasetService.addByIndex(5,{x: date, y: this.selectedDose});
-      wasAdded = true;
-    }
+    let note = new Note(date);
+
+    this.values.forEach(value => {
+      if (!isNaN(value.tempIntensity)) {
+        let point = new Point(date, value.tempIntensity, value.id);
+        this.pointProvider.save(point);
+        wasAdded = true;
+        note.points.push(point);
+      }
+    });
 
     if (wasAdded) {
+      console.log(note);
+      this.noteProvider.save(note);
       let toast = this.toastCtrl.create({
         message: 'Note was added successfully',
         duration: 1500,

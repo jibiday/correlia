@@ -17,6 +17,8 @@ import {AddValuePage} from '../pages/add-value/add-value';
 import {ValuesListPage} from '../pages/values-list/values-list';
 import {ColorPickerModule} from 'ngx-color-picker';
 import {ValueProvider} from '../providers/value/value';
+import {NoteProvider} from '../providers/note/note';
+import {PointProvider} from '../providers/point/point';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import {ValueProvider} from '../providers/value/value';
     DatasetService,
     AuthService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ValueProvider
+    ValueProvider,
+    NoteProvider,
+    PointProvider
   ]
 })
 export class AppModule {}

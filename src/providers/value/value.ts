@@ -11,6 +11,7 @@ export class ValueProvider {
       this.values = values !== null ? values : [];
     })
   }
+
   save(value: Value) {
     this.values.push(value);
     this.storage.set('values', this.values);
@@ -18,9 +19,14 @@ export class ValueProvider {
 
   getAll() {
     return this.storage.get('values').then((values: Value[]) => {
-      console.log(values);
       this.values = values !== null ? values : [];
       return [...this.values];
+    });
+  }
+
+  getById(id: number) {
+    return this.storage.get('values').then((values) => {
+      return [...values].find(v => v.id === id);
     });
   }
 }
