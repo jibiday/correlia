@@ -31,7 +31,7 @@ export class AddPage {
 
   add() {
     let wasAdded = false;
-    let date = moment(this.selectedDate).toDate();
+    let date = moment(this.selectedDate).toDate().valueOf();
     let note = new Note(date);
 
     this.values.forEach(value => {
@@ -44,7 +44,6 @@ export class AddPage {
     });
 
     if (wasAdded) {
-      console.log(note);
       this.noteProvider.save(note);
       let toast = this.toastCtrl.create({
         message: 'Note was added successfully',

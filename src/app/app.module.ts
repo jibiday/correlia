@@ -10,7 +10,6 @@ import {TabsPage} from '../pages/tabs/tabs';
 
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
-import {DatasetService} from '../services/datasetService';
 import {IonicStorageModule} from '@ionic/storage';
 import {AuthService} from '../services/authService';
 import {AddValuePage} from '../pages/add-value/add-value';
@@ -49,7 +48,6 @@ import {PointProvider} from '../providers/point/point';
   providers: [
     StatusBar,
     SplashScreen,
-    DatasetService,
     AuthService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ValueProvider,

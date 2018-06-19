@@ -25,6 +25,8 @@ export class ChartPage implements OnInit {
   datasets: Dataset[] = [];
 
   ngOnInit() {
+    Chart.defaults.global.elements.point.hitRadius = 5;
+    Chart.defaults.global.elements.point.radius = 2;
     this.chartView = 'overall';
     this.ctx = 'myChart';
     this.myChart = new Chart(this.ctx, {

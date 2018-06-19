@@ -1,10 +1,10 @@
 export class Note {
   id: number;
-  date: Date;
+  date: number;
   points: Point[] = [];
   comment: string;
 
-  constructor(date: Date) {
+  constructor(date: number) {
     this.date = date;
   }
 }
@@ -21,12 +21,12 @@ export class Value {
 }
 
 export class Point {
-  x: Date;
+  x: number;
   y: number;
   value: Value;
   valueId: number;
 
-  constructor(x: Date, y: number, valueId: number) {
+  constructor(x: number, y: number, valueId: number) {
     this.x = x;
     this.y = y;
     this.valueId = valueId;
