@@ -165,21 +165,25 @@ export class ChartPage implements OnInit {
       let mADataset = new Dataset();
       dataset.points.forEach((point, index, array) => {
         mADataset.value = dataset.value;
-        let mAPoint = JSON.parse(JSON.stringify(point));
-        if (index !== 0 && index !== array.length - 1) {
-          mAPoint.y = (array[index - 1].y + array[index].y) / 2;
-          mAPoint.x = (array[index - 1].x + array[index].x) / 2;
+        if (index !== 0) {
+          let mAMiddlePoint = JSON.parse(JSON.stringify(point));
+          mAMiddlePoint.y = (array[index - 1].y + array[index].y) / 2;
+          mAMiddlePoint.x = (array[index - 1].x + array[index].x) / 2;
+          mADataset.points.push(mAMiddlePoint);
         }
-        mADataset.points.push(mAPoint);
+        if (index === 0 || index === array.length - 1) {
+          let mAPoint = JSON.parse(JSON.stringify(point));
+          mADataset.points.push(mAPoint);
+        }
       });
       this.myChart.data.datasets.push({
         label: `${mADataset.value.name} (trend)`,
         data: mADataset.points,
         backgroundColor: [
-          this.hexToRgba(mADataset.value.color, 0.5)
+          mADataset.value.color
         ],
         borderColor: [
-          this.hexToRgba(mADataset.value.color, 0.5)
+          mADataset.value.color
         ],
         borderDash: [3],
         pointRadius: 0,
@@ -188,7 +192,6 @@ export class ChartPage implements OnInit {
         yAxisID: 'intensity'
       });
     });
-    console.log(this.myChart.data.datasets);
     this.myChart.update();
   }
 
