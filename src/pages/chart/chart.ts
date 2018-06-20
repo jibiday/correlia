@@ -180,7 +180,7 @@ export class ChartPage implements OnInit {
         label: `${mADataset.value.name} (trend)`,
         data: mADataset.points,
         backgroundColor: [
-          mADataset.value.color
+          this.hexToRgba(mADataset.value.color, 0.3)
         ],
         borderColor: [
           mADataset.value.color
@@ -192,6 +192,7 @@ export class ChartPage implements OnInit {
         yAxisID: 'intensity'
       });
     });
+    this.myChart.data.datasets.sort((d1, d2) => d1.label < d2.label ? -1 : 1);
     this.myChart.update();
   }
 
