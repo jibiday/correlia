@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import * as Chart from 'chart.js';
 import * as moment from 'moment';
-import {PointProvider} from "../../providers/point/point";
-import {Point, Value} from "../../domain/Symptom";
-import {ValueProvider} from "../../providers/value/value";
+import {PointProvider} from '../../providers/point/point';
+import {Point, Value} from '../../domain/Symptom';
+import {ValueProvider} from '../../providers/value/value';
 
 @Component({
   selector: 'page-chart',
@@ -148,14 +148,48 @@ export class ChartPage implements OnInit {
            borderColor: [
              dataset.value.color
            ],
+           showLine: false,
            fill: false,
            borderWidth: 2,
            yAxisID: 'intensity'
          })
        });
+       this.createMovingAverageDatasets();
        this.myChart.update();
      });
    });
+  }
+
+  createMovingAverageDatasets() {
+    this.datasets.forEach(dataset => {
+      let mADataset = new Dataset();
+      dataset.points.forEach((point, index, array) => {
+        mADataset.value = dataset.value;
+        let mAPoint = JSON.parse(JSON.stringify(point));
+        if (index !== 0 && index !== array.length - 1) {
+          mAPoint.y = (array[index - 1].y + array[index].y) / 2;
+          mAPoint.x = (array[index - 1].x + array[index].x) / 2;
+        }
+        mADataset.points.push(mAPoint);
+      });
+      this.myChart.data.datasets.push({
+        label: `${mADataset.value.name} (trend)`,
+        data: mADataset.points,
+        backgroundColor: [
+          this.hexToRgba(mADataset.value.color, 0.5)
+        ],
+        borderColor: [
+          this.hexToRgba(mADataset.value.color, 0.5)
+        ],
+        borderDash: [3],
+        pointRadius: 0,
+        fill: false,
+        borderWidth: 2,
+        yAxisID: 'intensity'
+      });
+    });
+    console.log(this.myChart.data.datasets);
+    this.myChart.update();
   }
 
   drawPointLabels() {
@@ -198,6 +232,19 @@ export class ChartPage implements OnInit {
         });
       }
     });
+  }
+
+  hexToRgba(hex, alpha){
+    hex   = hex.replace('#', '');
+    let r = parseInt(hex.length == 3 ? hex.slice(0, 1).repeat(2) : hex.slice(0, 2), 16);
+    let g = parseInt(hex.length == 3 ? hex.slice(1, 2).repeat(2) : hex.slice(2, 4), 16);
+    let b = parseInt(hex.length == 3 ? hex.slice(2, 3).repeat(2) : hex.slice(4, 6), 16);
+    if ( alpha ) {
+      return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+    }
+    else {
+      return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+    }
   }
 
   ionViewWillEnter() {
