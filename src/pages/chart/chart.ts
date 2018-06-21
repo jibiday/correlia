@@ -26,7 +26,7 @@ export class ChartPage implements OnInit {
 
   ngOnInit() {
     Chart.defaults.global.elements.point.hitRadius = 5;
-    Chart.defaults.global.elements.point.radius = 2;
+    Chart.defaults.global.elements.point.radius = 1;
     this.chartView = 'overall';
     this.ctx = 'myChart';
     this.myChart = new Chart(this.ctx, {
@@ -197,9 +197,8 @@ export class ChartPage implements OnInit {
           this.hexToRgba(mADataset.value.color, 0.3)
         ],
         borderColor: [
-          mADataset.value.color
+          this.hexToRgba(mADataset.value.color, 0.3)
         ],
-        borderDash: [3],
         pointRadius: 0,
         fill: false,
         borderWidth: 2,
