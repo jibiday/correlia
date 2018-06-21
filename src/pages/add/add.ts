@@ -32,6 +32,7 @@ export class AddPage implements OnInit{
     this.selectedDate = moment().format('YYYY-MM-DDTHH:mmZ');
     this.valueProvider.getAll().then(values => {
       this.values = this.values.concat(values.filter(newVal => !this.values.find(v => v.id === newVal.id)));
+      this.values = this.values.filter(deletedVal => values.find(v => v.id === deletedVal.id));
     })
   }
 

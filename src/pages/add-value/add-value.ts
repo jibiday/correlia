@@ -19,7 +19,6 @@ export class AddValuePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddValuePage');
   }
 
   save() {

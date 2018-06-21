@@ -29,4 +29,9 @@ export class ValueProvider {
       return [...values].find(v => v.id === id);
     });
   }
+
+  remove(id: number) {
+    this.values = this.values.filter(value => value.id !== id);
+    return this.storage.set('values', this.values);
+  }
 }

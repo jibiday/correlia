@@ -8,12 +8,26 @@
 
 <ion-content padding>
   <ion-list>
-    <button [style.color]="value.color" ion-item *ngFor="let value of values">
-      <b>{{ value.name }}</b>
-      <span>[{{ value.min }} - {{value.max}}]</span>
-    </button>
+    <ion-item-sliding *ngFor="let value of values">
+      <ion-item [style.color]="value.color">
+        <b>{{ value.name }}</b>
+        <span>[{{ value.min }} - {{value.max}}]</span>
+      </ion-item>
+      <ion-item-options side="left">
+        <button icon-only color="secondary" ion-button>
+          <ion-icon name="create"></ion-icon>
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right">
+        <button icon-only [color]="'danger'" ion-button (click)="remove(value)">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
   <ion-fab bottom right>
-    <button ion-fab (click)="addValue()"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab (click)="addValue()">
+      <ion-icon name="add"></ion-icon>
+    </button>
   </ion-fab>
 </ion-content>

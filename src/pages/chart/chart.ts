@@ -146,8 +146,11 @@ export class ChartPage implements OnInit {
          let dataset = this.datasets.find(dataset => dataset.value.id === point.valueId);
          if (!dataset) {
            dataset = new Dataset();
-           dataset.value = this.values.find(val => val.id === point.valueId);
-           this.datasets.push(dataset);
+           let value = this.values.find(val => val.id === point.valueId);
+           if (value) {
+             dataset.value = value;
+             this.datasets.push(dataset);
+           }
          }
          dataset.points.push(point);
        });
