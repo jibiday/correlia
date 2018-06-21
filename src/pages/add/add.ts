@@ -13,7 +13,7 @@ import {Note, Point, Value} from "../../domain/Symptom";
 export class AddPage {
 
   values: Value[];
-  selectedDate = moment().format('YYYY-MM-DDTHH:mm');
+  selectedDate = moment().format('YYYY-MM-DDTHH:mmZ');
 
   constructor(public navCtrl: NavController,
               private toastCtrl: ToastController,
@@ -23,7 +23,7 @@ export class AddPage {
   }
 
   ionViewWillEnter() {
-    this.selectedDate = moment().format('YYYY-MM-DDTHH:mm');
+    this.selectedDate = moment().format('YYYY-MM-DDTHH:mmZ');
     this.valueProvider.getAll().then(values => {
       this.values = values;
     })
