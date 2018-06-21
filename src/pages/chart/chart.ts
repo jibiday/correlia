@@ -41,7 +41,21 @@ export class ChartPage implements OnInit {
         legend: {
           position: 'bottom',
           labels: {
-            usePointStyle: true
+            usePointStyle: true,
+            filter: (legendItem) => {
+              return !legendItem.text.includes('(trend)');
+            },
+          },
+          onClick: (e, legendItem) => {
+            let index = legendItem.datasetIndex;
+            let i1 = Math.floor(index / 2) * 2;
+            let i2 = i1 + 1;
+            let ci = this.myChart;
+            [ci.getDatasetMeta(i1),
+              ci.getDatasetMeta(i2)].forEach(function (meta) {
+              meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+            });
+            ci.update();
           }
         },
         tooltips: {
