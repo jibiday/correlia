@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NavController, ToastController} from 'ionic-angular';
 import * as moment from 'moment';
 import {NoteProvider} from "../../providers/note/note";
@@ -10,9 +10,9 @@ import {Note, Point, Value} from "../../domain/Symptom";
   selector: 'page-add',
   templateUrl: 'add.html'
 })
-export class AddPage {
+export class AddPage implements OnInit{
 
-  values: Value[];
+  values: Value[] = [];
   selectedDate = moment().format('YYYY-MM-DDTHH:mmZ');
 
   constructor(public navCtrl: NavController,
@@ -22,10 +22,16 @@ export class AddPage {
               private valueProvider: ValueProvider) {
   }
 
+  ngOnInit(): void {
+    this.valueProvider.getAll().then(values => {
+      this.values = values;
+    })
+  }
+
   ionViewWillEnter() {
     this.selectedDate = moment().format('YYYY-MM-DDTHH:mmZ');
     this.valueProvider.getAll().then(values => {
-      this.values = values;
+      this.values = this.values.concat(values.filter(newVal => !this.values.find(v => v.id === newVal.id)));
     })
   }
 
