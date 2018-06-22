@@ -92,8 +92,7 @@ export class ChartPage implements OnInit {
               },
               ticks: {
                 display: false,
-                beginAtZero: true,
-                stepSize: 1
+                beginAtZero: true
               }
             },
             {
@@ -109,8 +108,7 @@ export class ChartPage implements OnInit {
                 labelString: 'negative'
               },
               ticks: {
-                display: false,
-                stepSize: 1
+                display: false
               }
             },
             {
@@ -151,8 +149,10 @@ export class ChartPage implements OnInit {
     });
     this.myChart.options.scales.yAxes[0].ticks.suggestedMin = -5;
     this.myChart.options.scales.yAxes[0].ticks.suggestedMax = 10;
+    this.myChart.options.scales.yAxes[0].ticks.stepSize = 1;
     this.myChart.options.scales.yAxes[1].ticks.suggestedMin = -5;
     this.myChart.options.scales.yAxes[1].ticks.suggestedMax = 10;
+    this.myChart.options.scales.yAxes[1].ticks.stepSize = 1;
     this.datasets.forEach(dataset => {
       this.myChart.data.datasets.push({
         label: dataset.value.name,
