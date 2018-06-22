@@ -93,8 +93,6 @@ export class ChartPage implements OnInit {
               ticks: {
                 display: false,
                 beginAtZero: true,
-                suggestedMin: -5,
-                suggestedMax: 10,
                 stepSize: 1
               }
             },
@@ -112,8 +110,6 @@ export class ChartPage implements OnInit {
               },
               ticks: {
                 display: false,
-                suggestedMin: -5,
-                suggestedMax: 10,
                 stepSize: 1
               }
             },
@@ -153,7 +149,10 @@ export class ChartPage implements OnInit {
         }
       }
     });
+    this.myChart.options.scales.yAxes[0].ticks.suggestedMin = -5;
     this.myChart.options.scales.yAxes[0].ticks.suggestedMax = 10;
+    this.myChart.options.scales.yAxes[1].ticks.suggestedMin = -5;
+    this.myChart.options.scales.yAxes[1].ticks.suggestedMax = 10;
     this.datasets.forEach(dataset => {
       this.myChart.data.datasets.push({
         label: dataset.value.name,
