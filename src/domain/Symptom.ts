@@ -22,15 +22,19 @@ export class Value {
 }
 
 export class Point {
-  x: number;
+  millis: number;
   y: number;
   value: Value;
   valueId: number;
 
-  constructor(x: number, y: number, valueId: number) {
-    this.x = x;
+  constructor(millis: number, y: number, valueId: number) {
+    this.millis = millis;
     this.y = y;
     this.valueId = valueId;
+  }
+
+  get x() {
+    return new Date(this.millis);
   }
 }
 

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Point} from "../../domain/Symptom";
-import {Storage} from "@ionic/storage";
+import {Point} from '../../domain/Symptom';
+import {Storage} from '@ionic/storage';
 
 @Injectable()
 export class PointProvider {
@@ -20,7 +20,8 @@ export class PointProvider {
   getAll() {
     return this.storage.get('points').then((points: Point[]) => {
       this.points = points !== null ? points : [];
-      this.points.sort((a, b) => a.x.valueOf() - b.x.valueOf());
+      this.points.sort((a, b) => a.millis - b.millis);
+      this.points = this.points.map(point => new Point(point.millis, point.y, point.valueId));
       return [...this.points];
     });
   }

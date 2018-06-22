@@ -70,12 +70,11 @@ export class ChartPage implements OnInit {
         scales: {
           xAxes: [{
             gridLines: {
-              display: false
+              display: true
             },
-            type: 'linear',
-            distribution: 'linear',
+            type: 'time',
             ticks: {
-              display: false
+              display: true
             }
           }],
           yAxes: [
@@ -220,13 +219,13 @@ export class ChartPage implements OnInit {
       dataset.points.forEach((point, index, array) => {
         mADataset.value = dataset.value;
         if (index !== 0) {
-          let mAMiddlePoint = JSON.parse(JSON.stringify(point));
+          let mAMiddlePoint = new Point(point.millis, point.y, point.valueId);
           mAMiddlePoint.y = (array[index - 1].y + array[index].y) / 2;
-          mAMiddlePoint.x = (array[index - 1].x + array[index].x) / 2;
+          mAMiddlePoint.millis = (array[index - 1].millis + array[index].millis) / 2;
           mADataset.points.push(mAMiddlePoint);
         }
         if (index === 0 || index === array.length - 1) {
-          let mAPoint = JSON.parse(JSON.stringify(point));
+          let mAPoint = new Point(point.millis, point.y, point.valueId);
           mADataset.points.push(mAPoint);
         }
       });
