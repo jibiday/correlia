@@ -59,7 +59,7 @@ export class ChartPage implements OnInit {
           }
         },
         tooltips: {
-          mode: 'x',
+          mode: 'nearest',
           displayColors: false,
           callbacks: {
             title: (tooltips, data) => {

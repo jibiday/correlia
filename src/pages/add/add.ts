@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController, ToastController} from 'ionic-angular';
 import * as moment from 'moment';
-import {NoteProvider} from "../../providers/note/note";
-import {PointProvider} from "../../providers/point/point";
-import {ValueProvider} from "../../providers/value/value";
-import {Note, Point, Value} from "../../domain/Symptom";
+import {NoteProvider} from '../../providers/note/note';
+import {PointProvider} from '../../providers/point/point';
+import {ValueProvider} from '../../providers/value/value';
+import {Note, Point, Value} from '../../domain/Symptom';
 
 @Component({
   selector: 'page-add',
@@ -47,6 +47,7 @@ export class AddPage implements OnInit{
         this.pointProvider.save(point);
         wasAdded = true;
         note.points.push(point);
+        value.tempIntensity = null;
       }
     });
 
