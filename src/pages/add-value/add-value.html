@@ -21,7 +21,7 @@
   </button>
   <ion-item>
     <ion-label>Range</ion-label>
-    <ion-select [(ngModel)]="range">
+    <ion-select [(ngModel)]="range" interface="popover">
       <ion-option *ngFor="let r of ranges" [value]="r"><b>{{r.min}}</b> ... <b>{{r.max}}</b></ion-option>
     </ion-select>
   </ion-item>
