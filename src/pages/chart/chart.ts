@@ -23,11 +23,37 @@ export class ChartPage implements OnInit {
   points: Point[] = [];
   values: Value[] = [];
   datasets: Dataset[] = [];
+  segmentButtons = [
+    {
+      value: 'overall',
+      title: 'overall',
+      unit: ''
+    },
+    {
+      value: 'day',
+      title: 'day',
+      unit: 'hour'
+    },
+    {
+      value: 'week',
+      title: 'week',
+      unit: ''
+    },
+    {
+      value: 'month',
+      title: 'month',
+      unit: ''
+    },
+    {
+      value: 'year',
+      title: 'year',
+      unit: 'month'
+    }
+  ];
 
   ngOnInit() {
     Chart.defaults.global.elements.point.hitRadius = 5;
     Chart.defaults.global.elements.point.radius = 1;
-    this.chartView = 'overall';
     this.ctx = 'myChart';
     this.myChart = new Chart(this.ctx, {
       type: 'line',
@@ -173,6 +199,7 @@ export class ChartPage implements OnInit {
   }
 
  updateDatasets() {
+   let unit = '';
    this.datasets = [];
    this.pointProvider.getAll().then(points => {
      this.points = points;
@@ -188,10 +215,31 @@ export class ChartPage implements OnInit {
              this.datasets.push(dataset);
            }
          }
+         switch (this.chartView) {
+           case 'overview':
+             break;
+           case 'day':
+             point.millis = moment({ hour: moment(point.x).hour(), minute:  moment(point.x).minute()}).valueOf();
+             unit = 'hour';
+             break;
+           case 'week':
+             point.millis = moment({ day: moment(point.x).day()}).valueOf();
+             unit = 'day';
+             break;
+           case 'month':
+             point.millis = moment({ day:  moment(point.x).date(), hour: moment(point.x).hour(), minute:  moment(point.x).minute()}).valueOf();
+             unit = 'day';
+             break;
+           case 'year':
+             point.millis = moment({ month: moment(point.x).month(), day:  moment(point.x).date(), hour: moment(point.x).hour(), minute:  moment(point.x).minute()}).valueOf();
+             unit = 'month';
+             break;
+         }
          dataset.points.push(point);
        });
        this.myChart.data.datasets = [];
        this.datasets.forEach(dataset => {
+         dataset.points.sort((a, b) => a.millis - b.millis);
          this.myChart.data.datasets.push({
            label: dataset.value.name,
            data: dataset.points,
@@ -208,6 +256,8 @@ export class ChartPage implements OnInit {
          })
        });
        this.createMovingAverageDatasets();
+       this.myChart.options.scales.xAxes[0].time.unit = unit;
+       this.myChart.options.scales.xAxes[0].time.stepSize = 1;
        this.myChart.update();
      });
    });
