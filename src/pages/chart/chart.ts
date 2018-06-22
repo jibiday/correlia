@@ -80,15 +80,53 @@ export class ChartPage implements OnInit {
           }],
           yAxes: [
             {
+              id: 'intensity',
+              position: 'left',
               gridLines: {
                 display: true,
                 drawTicks: false
               },
-              id: 'intensity',
-              position: 'left',
               scaleLabel: {
                 display: false,
                 labelString: 'intensity'
+              },
+              ticks: {
+                display: false,
+                beginAtZero: true,
+                suggestedMin: -5,
+                suggestedMax: 10,
+                stepSize: 1
+              }
+            },
+            {
+              id: 'negative',
+              position: 'left',
+              gridLines: {
+                display: true,
+                drawTicks: false,
+                zeroLineWidth: 3
+              },
+              scaleLabel: {
+                display: false,
+                labelString: 'negative'
+              },
+              ticks: {
+                display: false,
+                suggestedMin: -5,
+                suggestedMax: 10,
+                stepSize: 1
+              }
+            },
+            {
+              id: 'natural',
+              position: 'left',
+              gridLines: {
+                display: false,
+                drawTicks: false
+              },
+              scaleLabel: {
+                display: false,
+                labelString: 'natural'
               },
               ticks: {
                 display: false,
@@ -128,7 +166,7 @@ export class ChartPage implements OnInit {
         ],
         fill: false,
         borderWidth: 2,
-        yAxisID: 'intensity'
+        yAxisID: dataset.value.range.name
       })
     });
 
@@ -168,7 +206,7 @@ export class ChartPage implements OnInit {
            showLine: false,
            fill: false,
            borderWidth: 2,
-           yAxisID: 'intensity'
+           yAxisID: dataset.value.range.name
          })
        });
        this.createMovingAverageDatasets();
@@ -203,9 +241,9 @@ export class ChartPage implements OnInit {
           this.hexToRgba(mADataset.value.color, 0.3)
         ],
         pointRadius: 0,
-        fill: false,
+        fill: dataset.value.range.name === 'negative',
         borderWidth: 2,
-        yAxisID: 'intensity'
+        yAxisID: dataset.value.range.name
       });
     });
     this.myChart.data.datasets.sort((d1, d2) => d1.label < d2.label ? -1 : 1);

@@ -18,6 +18,7 @@ export class Value {
   icon: string;
   chartType: string = 'line';
   tempIntensity?: number;
+  range: Range;
 }
 
 export class Point {
@@ -30,5 +31,25 @@ export class Point {
     this.x = x;
     this.y = y;
     this.valueId = valueId;
+  }
+}
+
+export class Range {
+  name: string;
+  min: number;
+  max: number;
+
+  public static intensity = new Range('intensity', 0, 10);
+  public static negative = new Range('negative', -5, 5);
+  public static natural = new Range('natural', 0, 1000000);
+
+  static all() {
+    return [Range.intensity, Range.negative, Range.natural];
+  }
+
+  constructor(name: string, min: number, max: number) {
+    this.name = name;
+    this.min = min;
+    this.max = max;
   }
 }

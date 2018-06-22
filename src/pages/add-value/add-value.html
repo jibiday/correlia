@@ -19,6 +19,12 @@
     Color: {{color}}
     </ion-label>
   </button>
+  <ion-item>
+    <ion-label>Range</ion-label>
+    <ion-select [(ngModel)]="range">
+      <ion-option *ngFor="let r of ranges" [value]="r"><b>{{r.min}}</b> ... <b>{{r.max}}</b></ion-option>
+    </ion-select>
+  </ion-item>
   <!--<ion-item>-->
     <!--<ion-label>-->
       <!--Scale range:-->

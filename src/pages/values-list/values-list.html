@@ -11,7 +11,7 @@
     <ion-item-sliding *ngFor="let value of values">
       <ion-item [style.color]="value.color">
         <b>{{ value.name }}</b>
-        <span>[{{ value.min }} - {{value.max}}]</span>
+        <span>[{{ value.range.min }} ... {{value.range.max}}]</span>
       </ion-item>
       <ion-item-options side="left">
         <button icon-only color="secondary" ion-button>

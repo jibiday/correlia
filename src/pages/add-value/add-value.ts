@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, ToastController} from 'ionic-angular';
-import {Value} from '../../domain/Symptom';
+import {Range, Value} from '../../domain/Symptom';
 import {ValueProvider} from '../../providers/value/value';
 
 @Component({
@@ -13,6 +13,8 @@ export class AddValuePage {
   color: string = '#0af';
   min = 0;
   max = 10;
+  range = Range.intensity;
+  ranges = Range.all();
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private toastCtrl: ToastController,
               private valueProvider: ValueProvider) {
@@ -26,8 +28,7 @@ export class AddValuePage {
     value.id = new Date().valueOf();
     value.name = this.name;
     value.color = this.color;
-    value.min = this.min;
-    value.max = this.max;
+    value.range = this.range;
     this.valueProvider.save(value);
     let toast = this.toastCtrl.create({
       message: 'Value was saved successfully',
