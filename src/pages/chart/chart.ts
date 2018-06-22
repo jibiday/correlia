@@ -19,36 +19,16 @@ export class ChartPage implements OnInit {
 
   ctx;
   myChart;
-  chartView = 'overall';
+  chartView = ChartType.overview.value;
   points: Point[] = [];
   values: Value[] = [];
   datasets: Dataset[] = [];
   segmentButtons = [
-    {
-      value: 'overall',
-      title: 'overall',
-      unit: ''
-    },
-    {
-      value: 'day',
-      title: 'day',
-      unit: 'hour'
-    },
-    {
-      value: 'week',
-      title: 'week',
-      unit: ''
-    },
-    {
-      value: 'month',
-      title: 'month',
-      unit: ''
-    },
-    {
-      value: 'year',
-      title: 'year',
-      unit: 'month'
-    }
+    ChartType.overview,
+    ChartType.day,
+    ChartType.week,
+    ChartType.month,
+    ChartType.year
   ];
 
   ngOnInit() {
@@ -99,8 +79,12 @@ export class ChartPage implements OnInit {
               display: true
             },
             type: 'time',
+            time: {
+              minUnit: 'minute'
+            },
             ticks: {
-              display: true
+              display: true,
+              maxRotation: 90
             }
           }],
           yAxes: [
@@ -199,7 +183,17 @@ export class ChartPage implements OnInit {
   }
 
  updateDatasets() {
-   let unit = '';
+   let unit = null;
+   let displayFormat = {
+     millisecond: 'hh:mm',
+     second: 'hh:mm',
+     minute: 'hh:mm',
+     hour: 'hh:mm',
+     day: 'MMM D',
+     week: 'll',
+     month: 'MMM YYYY',
+     year: 'YYYY'
+   };
    this.datasets = [];
    this.pointProvider.getAll().then(points => {
      this.points = points;
@@ -221,18 +215,22 @@ export class ChartPage implements OnInit {
            case 'day':
              point.millis = moment({ hour: moment(point.x).hour(), minute:  moment(point.x).minute()}).valueOf();
              unit = 'hour';
+             displayFormat['hour'] = 'HH:mm';
              break;
            case 'week':
              point.millis = moment({ day: moment(point.x).day()}).valueOf();
              unit = 'day';
+             displayFormat['day'] = 'ddd';
              break;
            case 'month':
              point.millis = moment({ day:  moment(point.x).date(), hour: moment(point.x).hour(), minute:  moment(point.x).minute()}).valueOf();
              unit = 'day';
+             displayFormat['day'] = 'D';
              break;
            case 'year':
              point.millis = moment({ month: moment(point.x).month(), day:  moment(point.x).date(), hour: moment(point.x).hour(), minute:  moment(point.x).minute()}).valueOf();
              unit = 'month';
+             displayFormat['month'] = 'MMM';
              break;
          }
          dataset.points.push(point);
@@ -257,7 +255,12 @@ export class ChartPage implements OnInit {
        });
        this.createMovingAverageDatasets();
        this.myChart.options.scales.xAxes[0].time.unit = unit;
-       this.myChart.options.scales.xAxes[0].time.stepSize = 1;
+       if (this.chartView !== ChartType.overview.value) {
+         this.myChart.options.scales.xAxes[0].time.stepSize = 1;
+       } else {
+         this.myChart.options.scales.xAxes[0].time.stepSize = 0;
+       }
+       this.myChart.options.scales.xAxes[0].time.displayFormats = displayFormat;
        this.myChart.update();
      });
    });
@@ -361,4 +364,20 @@ export class ChartPage implements OnInit {
 export class Dataset {
   value: Value;
   points: Point[] = [];
+}
+
+export class ChartType {
+  value: string;
+  title: string;
+
+  public static overview = new ChartType('overview', 'overview');
+  public static day = new ChartType('day', 'day');
+  public static week = new ChartType('week', 'week');
+  public static month = new ChartType('month', 'month');
+  public static year = new ChartType('year', 'year');
+
+  constructor(value: string, title: string) {
+    this.value = value;
+    this.title = title;
+  }
 }
