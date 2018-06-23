@@ -19,12 +19,12 @@ export class ChartPage implements OnInit {
 
   ctx;
   myChart;
-  chartView = ChartType.overview.value;
+  chartView = ChartType.overall;
   points: Point[] = [];
   values: Value[] = [];
   datasets: Dataset[] = [];
   segmentButtons = [
-    ChartType.overview,
+    ChartType.overall,
     ChartType.day,
     ChartType.week,
     ChartType.month,
@@ -100,8 +100,10 @@ export class ChartPage implements OnInit {
                 labelString: 'intensity'
               },
               ticks: {
-                display: false,
-                beginAtZero: true
+                display: true,
+                beginAtZero: true,
+                mirror: true,
+                padding: -5
               }
             },
             {
@@ -109,8 +111,7 @@ export class ChartPage implements OnInit {
               position: 'left',
               gridLines: {
                 display: true,
-                drawTicks: false,
-                zeroLineWidth: 3
+                drawTicks: false
               },
               scaleLabel: {
                 display: false,
@@ -182,93 +183,120 @@ export class ChartPage implements OnInit {
 
   }
 
- updateDatasets() {
-   let unit = null;
-   let displayFormat = {
-     millisecond: 'hh:mm',
-     second: 'hh:mm',
-     minute: 'hh:mm',
-     hour: 'hh:mm',
-     day: 'MMM D',
-     week: 'll',
-     month: 'MMM YYYY',
-     year: 'YYYY'
-   };
-   this.datasets = [];
-   this.pointProvider.getAll().then(points => {
-     this.points = points;
-     this.valueProvider.getAll().then(values => {
-       this.values = values;
-       this.points.forEach(point => {
-         let dataset = this.datasets.find(dataset => dataset.value.id === point.valueId);
-         if (!dataset) {
-           dataset = new Dataset();
-           let value = this.values.find(val => val.id === point.valueId);
-           if (value) {
-             dataset.value = value;
-             this.datasets.push(dataset);
-           }
-         }
-         switch (this.chartView) {
-           case 'overview':
-             break;
-           case 'day':
-             point.millis = moment({ hour: moment(point.x).hour(), minute:  moment(point.x).minute()}).valueOf();
-             unit = 'hour';
-             displayFormat['hour'] = 'HH:mm';
-             break;
-           case 'week':
-             point.millis = moment({ day: moment(point.x).day()}).valueOf();
-             unit = 'day';
-             displayFormat['day'] = 'ddd';
-             break;
-           case 'month':
-             point.millis = moment({ day:  moment(point.x).date(), hour: moment(point.x).hour(), minute:  moment(point.x).minute()}).valueOf();
-             unit = 'day';
-             displayFormat['day'] = 'D';
-             break;
-           case 'year':
-             point.millis = moment({ month: moment(point.x).month(), day:  moment(point.x).date(), hour: moment(point.x).hour(), minute:  moment(point.x).minute()}).valueOf();
-             unit = 'month';
-             displayFormat['month'] = 'MMM';
-             break;
-         }
-         dataset.points.push(point);
-       });
-       this.myChart.data.datasets = [];
-       this.datasets.forEach(dataset => {
-         dataset.points.sort((a, b) => a.millis - b.millis);
-         this.myChart.data.datasets.push({
-           label: dataset.value.name,
-           data: dataset.points,
-           backgroundColor: [
-             dataset.value.color
-           ],
-           borderColor: [
-             dataset.value.color
-           ],
-           showLine: false,
-           fill: false,
-           borderWidth: 2,
-           yAxisID: dataset.value.range.name
-         })
-       });
-       this.createMovingAverageDatasets();
-       this.myChart.options.scales.xAxes[0].time.unit = unit;
-       if (this.chartView !== ChartType.overview.value) {
-         this.myChart.options.scales.xAxes[0].time.stepSize = 1;
-       } else {
-         this.myChart.options.scales.xAxes[0].time.stepSize = 0;
-       }
-       this.myChart.options.scales.xAxes[0].time.displayFormats = displayFormat;
-       this.myChart.update();
-     });
-   });
+  updateDatasets() {
+    let unit = null;
+    let displayFormat = {
+      millisecond: 'hh:mm',
+      second: 'hh:mm',
+      minute: 'hh:mm',
+      hour: 'hh:mm',
+      day: 'MMM D',
+      week: 'll',
+      month: 'MMM YYYY',
+      year: 'YYYY'
+    };
+    this.datasets = [];
+    this.pointProvider.getAll().then(points => {
+      this.points = points;
+      this.valueProvider.getAll().then(values => {
+        this.values = values;
+        this.points.forEach(point => {
+          let dataset = this.datasets.find(dataset => dataset.value.id === point.valueId);
+          if (!dataset) {
+            dataset = new Dataset('points');
+            let value = this.values.find(val => val.id === point.valueId);
+            if (value) {
+              dataset.value = value;
+              this.datasets.push(dataset);
+            }
+          }
+          switch (this.chartView.value) {
+            case ChartType.overall.value:
+              break;
+            case ChartType.day.value:
+              point.millis = moment({hour: moment(point.x).hour(), minute: moment(point.x).minute()}).valueOf();
+              unit = 'hour';
+              displayFormat['hour'] = 'HH:mm';
+              break;
+            case ChartType.week.value:
+              point.millis = moment({
+                day: moment(point.x).day(),
+                hour: moment(point.x).hour(),
+                minute: moment(point.x).minute()
+              }).valueOf();
+              unit = 'day';
+              displayFormat['day'] = 'ddd';
+              break;
+            case ChartType.month.value:
+              point.millis = moment({day: moment(point.x).date(), hour: moment(point.x).hour()}).valueOf();
+              unit = 'day';
+              displayFormat['day'] = 'D';
+              break;
+            case ChartType.year.value:
+              point.millis = moment({
+                month: moment(point.x).month(),
+                day: moment(point.x).date(),
+                hour: moment(point.x).hour(),
+                minute: moment(point.x).minute()
+              }).valueOf();
+              unit = 'month';
+              displayFormat['month'] = 'MMM';
+              break;
+          }
+          dataset.points.push(point);
+        });
+        this.myChart.data.datasets = [];
+        this.datasets.forEach(dataset => {
+          dataset.points.sort((a, b) => a.millis - b.millis);
+          this.myChart.data.datasets.push({
+            label: dataset.value.name,
+            data: dataset.points,
+            backgroundColor: [
+              dataset.value.color
+            ],
+            borderColor: [
+              dataset.value.color
+            ],
+            showLine: false,
+            fill: false,
+            borderWidth: 2,
+            yAxisID: dataset.value.range.name
+          })
+        });
+        this.createMovingAverageDatasets();
+        this.myChart.options.scales.xAxes[0].time.unit = unit;
+        if (this.chartView.value !== ChartType.overall.value) {
+          this.myChart.options.scales.xAxes[0].time.stepSize = 1;
+        } else {
+          this.myChart.options.scales.xAxes[0].time.stepSize = null;
+        }
+        this.myChart.options.scales.xAxes[0].time.displayFormats = displayFormat;
+        this.myChart.update();
+      });
+    });
   }
 
   createMovingAverageDatasets() {
+    if (this.chartView === ChartType.month) {
+      this.datasets.filter(dataset => dataset.type === 'points').forEach(dataset => {
+        let averagePoints = new Map<number, number[]>();
+        dataset.points.forEach(point => {
+          let dailyPoints = averagePoints.get(point.x.getDate());
+          if (dailyPoints) {
+            dailyPoints.push(point.y);
+          } else {
+            averagePoints.set(point.x.getDate(), [point.y]);
+          }
+        });
+        dataset.points = [];
+        averagePoints.forEach((v, k) => {
+          dataset.points.push(new Point(moment({date: k}).valueOf(), v.reduce((a, b) => a + b, 0) / v.length, dataset.value.id));
+        });
+        dataset.points.sort((a, b) => a.millis - b.millis);
+      })
+    }
     this.datasets.forEach(dataset => {
-      let mADataset = new Dataset();
+      let mADataset = new Dataset('MA');
       dataset.points.forEach((point, index, array) => {
         mADataset.value = dataset.value;
         if (index !== 0) {
@@ -289,7 +317,7 @@ export class ChartPage implements OnInit {
           this.hexToRgba(mADataset.value.color, 0.3)
         ],
         borderColor: [
-          this.hexToRgba(mADataset.value.color, 0.3)
+          this.hexToRgba(mADataset.value.color, 0.5)
         ],
         pointRadius: 0,
         fill: dataset.value.range.name === 'negative',
@@ -343,12 +371,12 @@ export class ChartPage implements OnInit {
     });
   }
 
-  hexToRgba(hex, alpha){
-    hex   = hex.replace('#', '');
+  hexToRgba(hex, alpha) {
+    hex = hex.replace('#', '');
     let r = parseInt(hex.length == 3 ? hex.slice(0, 1).repeat(2) : hex.slice(0, 2), 16);
     let g = parseInt(hex.length == 3 ? hex.slice(1, 2).repeat(2) : hex.slice(2, 4), 16);
     let b = parseInt(hex.length == 3 ? hex.slice(2, 3).repeat(2) : hex.slice(4, 6), 16);
-    if ( alpha ) {
+    if (alpha) {
       return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
     }
     else {
@@ -362,19 +390,24 @@ export class ChartPage implements OnInit {
 }
 
 export class Dataset {
+  type: string;
   value: Value;
   points: Point[] = [];
+
+  constructor(type: string) {
+    this.type = type;
+  }
 }
 
 export class ChartType {
   value: string;
   title: string;
 
-  public static overview = new ChartType('overview', 'overview');
-  public static day = new ChartType('day', 'day');
-  public static week = new ChartType('week', 'week');
-  public static month = new ChartType('month', 'month');
-  public static year = new ChartType('year', 'year');
+  public static overall = new ChartType('overall', 'Overall');
+  public static day = new ChartType('day', 'Average per day');
+  public static week = new ChartType('week', 'Average per week');
+  public static month = new ChartType('month', 'Average per month');
+  public static year = new ChartType('year', 'Average per year');
 
   constructor(value: string, title: string) {
     this.value = value;

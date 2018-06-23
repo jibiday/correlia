@@ -42,7 +42,7 @@ export class AddPage implements OnInit{
     let note = new Note(date);
 
     this.values.forEach(value => {
-      if (!isNaN(value.tempIntensity)) {
+      if (!isNaN(value.tempIntensity) && value.tempIntensity != null) {
         let point = new Point(date, value.tempIntensity, value.id);
         this.pointProvider.save(point);
         wasAdded = true;
