@@ -425,6 +425,7 @@ export class ChartPage implements OnInit {
           this.hexToRgba(intervalTopDataset.value.color, 0.8)
         ],
         pointRadius: 0,
+        borderWidth: 0.1,
         fill: '-1',
         yAxisID: dataset.value.range.name
       });
@@ -437,6 +438,7 @@ export class ChartPage implements OnInit {
         borderColor: [
           this.hexToRgba(intervalBottomDataset.value.color, 0.8)
         ],
+        borderWidth: 0.1,
         pointRadius: 0,
         fill: '+1',
         yAxisID: dataset.value.range.name
