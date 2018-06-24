@@ -352,6 +352,7 @@ export class ChartPage implements OnInit {
         borderColor: [
           this.hexToRgba(eventDataset.value.color, 0.8)
         ],
+        pointRadius: 0,
         yAxisID: dataset.value.range.name
       });
     });
