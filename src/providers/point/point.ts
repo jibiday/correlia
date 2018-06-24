@@ -21,7 +21,11 @@ export class PointProvider {
     return this.storage.get('points').then((points: Point[]) => {
       this.points = points !== null ? points : [];
       this.points.sort((a, b) => a.millis - b.millis);
-      this.points = this.points.map(point => new Point(point.millis, point.y, point.valueId));
+      this.points = this.points.map(point => {
+        let res = new Point(point.millis, point.y, point.valueId);
+        res.millisEnd = point.millisEnd;
+        return res;
+      });
       return [...this.points];
     });
   }

@@ -13,6 +13,7 @@ import {Note, Point, Value, ValueType} from '../../domain/Symptom';
 export class AddPage implements OnInit{
 
   ValueType = ValueType;
+  now = moment().format('YYYY-MM-DDTHH:mmZ');
   values: Value[] = [];
   selectedDate = moment().format('YYYY-MM-DDTHH:mmZ');
 
@@ -43,12 +44,25 @@ export class AddPage implements OnInit{
     let note = new Note(date);
 
     this.values.forEach(value => {
-      if (!isNaN(value.tempIntensity) && value.tempIntensity != null) {
-        let point = new Point(date, value.tempIntensity, value.id);
-        this.pointProvider.save(point);
-        wasAdded = true;
-        note.points.push(point);
-        value.tempIntensity = null;
+      if (value.type === ValueType.intensity || value.type === ValueType.event) {
+        if (!isNaN(value.tempIntensity) && value.tempIntensity != null) {
+          let point = new Point(date, value.tempIntensity, value.id);
+          this.pointProvider.save(point);
+          wasAdded = true;
+          note.points.push(point);
+          value.tempIntensity = null;
+        }
+      }
+      if (value.type === ValueType.interval) {
+        if (value.tempIntervalStart && value.tempIntervalEnd) {
+          let point = new Point(moment(value.tempIntervalStart).toDate().valueOf(), 1, value.id);
+          point.millisEnd = moment(value.tempIntervalEnd).toDate().valueOf();
+          this.pointProvider.save(point);
+          wasAdded = true;
+          note.points.push(point);
+          value.tempIntervalStart = null;
+          value.tempIntervalEnd = null;
+        }
       }
     });
 

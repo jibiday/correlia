@@ -22,7 +22,7 @@
   <ion-list radio-group [(ngModel)]="type" *ngFor="let t of types">
     <ion-item>
       <ion-label>{{t}}</ion-label>
-      <ion-radio [disabled]="t != 'Event'" [value]="t"></ion-radio>
+      <ion-radio [value]="t"></ion-radio>
     </ion-item>
   </ion-list>
 

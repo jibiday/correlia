@@ -16,6 +16,8 @@ export class Value {
   icon: string;
   type: ValueType;
   tempIntensity?: number;
+  tempIntervalStart?: string;
+  tempIntervalEnd?: string;
   range: Range;
 }
 
@@ -30,6 +32,7 @@ export class Point {
   y: number;
   value: Value;
   valueId: number;
+  millisEnd?: number;
 
   constructor(millis: number, y: number, valueId: number) {
     this.millis = millis;

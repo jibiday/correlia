@@ -49,16 +49,19 @@ export class ChartPage implements OnInit {
           labels: {
             usePointStyle: true,
             filter: (legendItem) => {
-              return !legendItem.text.includes('(trend)') && !legendItem.text.includes('(event)');
+              return !legendItem.text.includes('(trend)') && !legendItem.text.includes('(event)') &&
+                !legendItem.text.includes('(intervalTop)') && !legendItem.text.includes('(intervalBottom)');
             },
           },
           onClick: (e, legendItem) => {
             let index = legendItem.datasetIndex;
-            let i1 = Math.floor(index / 2) * 2;
+            let i1 = Math.floor(index / 3) * 3;
             let i2 = i1 + 1;
+            let i3 = i1 + 2;
             let ci = this.myChart;
             [ci.getDatasetMeta(i1),
-              ci.getDatasetMeta(i2)].forEach(function (meta) {
+              ci.getDatasetMeta(i2),
+              ci.getDatasetMeta(i3)].forEach(function (meta) {
               meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
             });
             ci.update();
@@ -138,11 +141,11 @@ export class ChartPage implements OnInit {
               }
             },
             {
+              id: 'event',
+              position: 'left',
               gridLines: {
                 display: false
               },
-              id: 'event',
-              position: 'left',
               scaleLabel: {
                 display: false,
                 fontSize: 9,
@@ -260,12 +263,15 @@ export class ChartPage implements OnInit {
             ],
             showLine: false,
             fill: false,
-            pointRadius: dataset.value.type === ValueType.event ? 0 : 2,
+            pointRadius: dataset.value.type === ValueType.event || dataset.value.type === ValueType.interval ? 0 : 2,
             yAxisID: dataset.value.range.name
           })
         });
         this.createMovingAverageDatasets();
         this.drawEvents();
+        if (this.chartView === ChartType.overall) {
+          this.drawIntervals();
+        }
         this.myChart.options.scales.xAxes[0].time.unit = unit;
         if (this.chartView.value !== ChartType.overall.value) {
           this.myChart.options.scales.xAxes[0].time.stepSize = 1;
@@ -326,6 +332,21 @@ export class ChartPage implements OnInit {
         borderWidth: 2,
         yAxisID: dataset.value.range.name
       });
+      // fake third one
+      this.myChart.data.datasets.push({
+        label: `${mADataset.value.name} (trend)2`,
+        data: mADataset.points,
+        backgroundColor: [
+          this.hexToRgba(mADataset.value.color, 0.3)
+        ],
+        borderColor: [
+          this.hexToRgba(mADataset.value.color, 0.5)
+        ],
+        pointRadius: 0,
+        fill: dataset.value.range.name === 'negative',
+        borderWidth: 2,
+        yAxisID: dataset.value.range.name
+      });
     });
     this.myChart.data.datasets.sort((d1, d2) => d1.label < d2.label ? -1 : 1);
     this.myChart.update();
@@ -353,6 +374,71 @@ export class ChartPage implements OnInit {
           this.hexToRgba(eventDataset.value.color, 0.8)
         ],
         pointRadius: 0,
+        yAxisID: dataset.value.range.name
+      });
+
+      // fake third one
+      this.myChart.data.datasets.push({
+        label: `${eventDataset.value.name} (event)2`,
+        data: eventDataset.points,
+        backgroundColor: [
+          this.hexToRgba(eventDataset.value.color, 0.3)
+        ],
+        borderColor: [
+          this.hexToRgba(eventDataset.value.color, 0.8)
+        ],
+        pointRadius: 0,
+        yAxisID: dataset.value.range.name
+      });
+    });
+    this.myChart.data.datasets.sort((d1, d2) => d1.label < d2.label ? -1 : 1);
+    this.myChart.update();
+  }
+
+  drawIntervals() {
+    let intervalDatasets = this.datasets.filter(dataset => dataset.value.type === ValueType.interval);
+    intervalDatasets.forEach((dataset, datasetIndex) => {
+      let intervalTopDataset = new Dataset('Intervals');
+      let intervalBottomDataset = new Dataset('Intervals');
+      dataset.points.forEach((point, index, array) => {
+        intervalBottomDataset.value = dataset.value;
+        intervalTopDataset.value = dataset.value;
+        let intervalBottomPoint = new Point(point.millis, point.y + datasetIndex / intervalDatasets.length, point.valueId);
+        intervalBottomDataset.points.push(intervalBottomPoint);
+        intervalBottomPoint = new Point(point.millisEnd, point.y + datasetIndex / intervalDatasets.length, point.valueId);
+        intervalBottomDataset.points.push(intervalBottomPoint);
+        intervalBottomDataset.points.push(new Point(point.millisEnd, null, point.valueId));
+
+        let intervalTopPoint = new Point(point.millis, point.y + (datasetIndex + 1) / intervalDatasets.length, point.valueId);
+        intervalTopDataset.points.push(intervalTopPoint);
+        intervalTopPoint = new Point(point.millisEnd, point.y + (datasetIndex + 1) / intervalDatasets.length, point.valueId);
+        intervalTopDataset.points.push(intervalTopPoint);
+        intervalTopDataset.points.push(new Point(point.millisEnd, null, point.valueId));
+      });
+      this.myChart.data.datasets.push({
+        label: `${intervalTopDataset.value.name} (intervalTop)`,
+        data: intervalTopDataset.points,
+        backgroundColor: [
+          this.hexToRgba(intervalTopDataset.value.color, 0.3)
+        ],
+        borderColor: [
+          this.hexToRgba(intervalTopDataset.value.color, 0.8)
+        ],
+        pointRadius: 0,
+        fill: '-1',
+        yAxisID: dataset.value.range.name
+      });
+      this.myChart.data.datasets.push({
+        label: `${intervalBottomDataset.value.name} (intervalBottom)`,
+        data: intervalBottomDataset.points,
+        backgroundColor: [
+          this.hexToRgba(intervalBottomDataset.value.color, 0.3)
+        ],
+        borderColor: [
+          this.hexToRgba(intervalBottomDataset.value.color, 0.8)
+        ],
+        pointRadius: 0,
+        fill: '+1',
         yAxisID: dataset.value.range.name
       });
     });

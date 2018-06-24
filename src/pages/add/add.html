@@ -10,39 +10,49 @@
 </ion-header>
 
 <ion-content padding style="height: 100%;">
-  <ion-item-sliding>
-    <ion-item>
-      <ion-label>
-        <ion-icon name="calendar"></ion-icon>
-      </ion-label>
-      <ion-datetime displayFormat="D MMMM YYYY HH:mm" pickerFormat="D MMMM YYYY HH:mm"
-                    [(ngModel)]="selectedDate"></ion-datetime>
-    </ion-item>
-    <ion-item-options side="right">
-      <button ion-button>Unread</button>
-    </ion-item-options>
-  </ion-item-sliding>
-  <h5>Values:</h5>
-  <ion-list *ngFor="let value of values">
-    <ion-item *ngIf="value.type === ValueType.intensity" style="position:relative;" no-lines
-              [style.backgroundColor]="value.tempIntensity || value.tempIntensity === 0 ? '#ebeee5' : ''">
-      <ion-label [style.color]="value.color" style="position:absolute;"><b>{{value.name}}</b></ion-label>
-      <ion-range pin [min]="value.range.min" [max]="value.range.max" step="1" [snaps]="value.range.max - value.range.min <= 20" [color]="'dark'"
-                 [(ngModel)]="value.tempIntensity">
-        <div style="width: 20px;" range-left>
-          <ion-icon [style.color]="value.color" small
-                    [name]="value.tempIntensity || value.tempIntensity === 0 ? 'trash' : 'body'"
-                    (click)="value.tempIntensity = undefined"></ion-icon>
-        </div>
-        <div style="width: 20px;" range-right>
-          <ion-icon [style.color]="value.color" large name="body"></ion-icon>
-        </div>
-      </ion-range>
-    </ion-item>
-  </ion-list>
+  <ion-card>
+    <ion-item-sliding>
+      <ion-item>
+        <ion-label>
+          <ion-icon name="calendar"></ion-icon>
+        </ion-label>
+        <ion-datetime displayFormat="D MMMM YYYY HH:mm" pickerFormat="D MMMM YYYY HH:mm"
+                      [(ngModel)]="selectedDate"></ion-datetime>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button>Unread</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-card>
 
-  <h5>Events:</h5>
-  <span *ngFor="let value of values">
+  <ion-card>
+    <ion-card-header>Values:</ion-card-header>
+    <ion-card-content>
+      <ion-list *ngFor="let value of values">
+        <ion-item *ngIf="value.type === ValueType.intensity" style="position:relative;" no-lines
+                  [style.backgroundColor]="value.tempIntensity || value.tempIntensity === 0 ? '#ebeee5' : ''">
+          <ion-label [style.color]="value.color" style="position:absolute;"><b>{{value.name}}</b></ion-label>
+          <ion-range pin [min]="value.range.min" [max]="value.range.max" step="1"
+                     [snaps]="value.range.max - value.range.min <= 20" [color]="'dark'"
+                     [(ngModel)]="value.tempIntensity">
+            <div style="width: 20px;" range-left>
+              <ion-icon [style.color]="value.color" small
+                        [name]="value.tempIntensity || value.tempIntensity === 0 ? 'trash' : 'body'"
+                        (click)="value.tempIntensity = undefined"></ion-icon>
+            </div>
+            <div style="width: 20px;" range-right>
+              <ion-icon [style.color]="value.color" large name="body"></ion-icon>
+            </div>
+          </ion-range>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>Events:</ion-card-header>
+    <ion-card-content>
+    <span *ngFor="let value of values">
   <ion-chip
     style="border: 1px solid lightgrey;"
     [style.backgroundColor]="value.tempIntensity || value.tempIntensity === 0 ? '#ebeee5' : 'white'"
@@ -53,6 +63,33 @@
       <span style="margin-right: 15px;" [style.color]="value.color"><b>{{value.name}}</b></span>
     </ion-chip>
   </span>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>Intervals:</ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row *ngFor="let value of values">
+          <ion-col col-12 *ngIf="value.type === ValueType.interval" style="text-align: center">
+            <span [style.color]="value.color"><b>{{value.name}}</b></span>
+          </ion-col>
+          <ion-col [style.backgroundColor]="value.tempIntervalStart ? '#ebeee5' : ''" col-6
+                   *ngIf="value.type === ValueType.interval" style="border-bottom: 1px solid lightgrey;">
+            <ion-datetime displayFormat="D.MM.YY HH:mm" pickerFormat="D MMMM YYYY HH:mm"
+                          [ngModel]="value.tempIntervalStart || now"
+                          [(ngModel)]="value.tempIntervalStart"></ion-datetime>
+          </ion-col>
+          <ion-col [style.backgroundColor]="value.tempIntervalEnd ? '#ebeee5' : ''" col-6
+                   *ngIf="value.type === ValueType.interval" style="border-bottom: 1px solid lightgrey;">
+            <ion-datetime displayFormat="D.MM.YY HH:mm" pickerFormat="D MMMM YYYY HH:mm"
+                          [ngModel]="value.tempIntervalEnd || now"
+                          [(ngModel)]="value.tempIntervalEnd"></ion-datetime>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
 
 <ion-footer no-border>
