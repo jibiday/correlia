@@ -15,15 +15,17 @@ import {AuthService} from '../services/authService';
 import {AddValuePage} from '../pages/add-value/add-value';
 import {ValuesListPage} from '../pages/values-list/values-list';
 import {ColorPickerModule} from 'ngx-color-picker';
-import {ValueProvider} from '../providers/value/value';
+import {ValueProvider} from '../providers/value/valueProvider';
 import {NoteProvider} from '../providers/note/note';
 import {PointProvider} from '../providers/point/point';
+import {AddEventOrIntervalPage} from "../pages/add-event-or-interval/add-event-or-interval";
 
 @NgModule({
   declarations: [
     MyApp,
     AddPage,
     AddValuePage,
+    AddEventOrIntervalPage,
     ValuesListPage,
     ContactPage,
     ChartPage,
@@ -42,6 +44,7 @@ import {PointProvider} from '../providers/point/point';
     ContactPage,
     ChartPage,
     AddValuePage,
+    AddEventOrIntervalPage,
     ValuesListPage,
     TabsPage
   ],

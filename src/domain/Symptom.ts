@@ -12,13 +12,17 @@ export class Note {
 export class Value {
   id: number;
   name: string;
-  min: number = 0;
-  max: number = 10;
   color: string;
   icon: string;
-  chartType: string = 'line';
+  type: ValueType;
   tempIntensity?: number;
   range: Range;
+}
+
+export enum ValueType {
+  intensity = 'Intensity',
+  event = 'Event',
+  interval = 'Interval'
 }
 
 export class Point {
@@ -46,6 +50,7 @@ export class Range {
   public static intensity = new Range('intensity', 0, 10);
   public static negative = new Range('negative', -5, 5);
   public static natural = new Range('natural', 0, 1000000);
+  public static event = new Range('event', 1, 2);
 
   static all() {
     return [Range.intensity, Range.negative, Range.natural];

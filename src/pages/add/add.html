@@ -10,58 +10,6 @@
 </ion-header>
 
 <ion-content padding style="height: 100%;">
-  <!--<ion-list>-->
-
-
-  <!--<ion-item-sliding>-->
-  <!--<ion-item no-lines [style.backgroundColor]="selectedPain || selectedPain === 0 ? '#ebeee5' : ''">-->
-  <!--<ion-range pin min="0" max="10" step="1" snaps="true" color="danger" [(ngModel)]="selectedPain">-->
-  <!--<div style="width: 20px;" range-left>-->
-  <!--<ion-icon color="danger" large [name]="selectedPain || selectedPain === 0 ? 'trash' : 'remove'"-->
-  <!--(click)="selectedPain = undefined"></ion-icon>-->
-  <!--</div>-->
-  <!--<div style="width: 20px;" range-right="">-->
-  <!--<ion-icon color="danger" name="pulse"></ion-icon>-->
-  <!--</div>-->
-  <!--</ion-range>-->
-  <!--</ion-item>-->
-  <!--<ion-item-options side="right">-->
-  <!--<button ion-button>Edit</button>-->
-  <!--</ion-item-options>-->
-  <!--</ion-item-sliding>-->
-
-  <!--<ion-item no-lines [style.backgroundColor]="selectedStress || selectedStress === 0 ? '#ebeee5' : ''">-->
-  <!--<ion-range pin min="0" max="10" step="1" snaps="true" color="primary" [(ngModel)]="selectedStress">-->
-  <!--<div style="width: 20px;" range-left>-->
-  <!--<ion-icon color="primary" [name]="selectedStress || selectedStress === 0 ? 'trash' : 'cloud'"-->
-  <!--(click)="selectedStress = undefined"></ion-icon>-->
-  <!--</div>-->
-  <!--<div style="width: 20px;" range-right>-->
-  <!--<ion-icon color="primary" name="flash"></ion-icon>-->
-  <!--</div>-->
-  <!--</ion-range>-->
-  <!--</ion-item>-->
-
-  <!--<ion-item no-lines [style.backgroundColor]="selectedMood || selectedMood === 0 ? '#ebeee5' : ''">-->
-  <!--<ion-range pin min="0" max="10" step="1" snaps="true" color="mood" [(ngModel)]="selectedMood">-->
-  <!--<div style="width: 20px;" range-left>-->
-  <!--<ion-icon color="mood" [name]="selectedMood || selectedMood === 0 ? 'trash' : 'sad'"-->
-  <!--(click)="selectedMood = undefined"></ion-icon>-->
-  <!--</div>-->
-  <!--<div style="width: 20px;" range-right>-->
-  <!--<ion-icon color="mood" name="happy"></ion-icon>-->
-  <!--</div>-->
-  <!--</ion-range>-->
-  <!--</ion-item>-->
-  <!--<ion-item>-->
-  <!--<ion-label>-->
-  <!--<ion-icon name="medkit"></ion-icon>-->
-  <!--Medication, mg:-->
-  <!--</ion-label>-->
-  <!--<ion-input type="number" [(ngModel)]="selectedDose"></ion-input>-->
-  <!--</ion-item>-->
-  <!--</ion-list>-->
-
   <ion-item-sliding>
     <ion-item>
       <ion-label>
@@ -74,8 +22,9 @@
       <button ion-button>Unread</button>
     </ion-item-options>
   </ion-item-sliding>
+  <h5>Values:</h5>
   <ion-list *ngFor="let value of values">
-    <ion-item style="position:relative;" no-lines
+    <ion-item *ngIf="value.type === ValueType.intensity" style="position:relative;" no-lines
               [style.backgroundColor]="value.tempIntensity || value.tempIntensity === 0 ? '#ebeee5' : ''">
       <ion-label [style.color]="value.color" style="position:absolute;"><b>{{value.name}}</b></ion-label>
       <ion-range pin [min]="value.range.min" [max]="value.range.max" step="1" [snaps]="value.range.max - value.range.min <= 20" [color]="'dark'"
@@ -91,6 +40,19 @@
       </ion-range>
     </ion-item>
   </ion-list>
+
+  <h5>Events:</h5>
+  <span *ngFor="let value of values">
+  <ion-chip
+    style="border: 1px solid lightgrey;"
+    [style.backgroundColor]="value.tempIntensity || value.tempIntensity === 0 ? '#ebeee5' : 'white'"
+    *ngIf="value.type === ValueType.event"
+    (click)="toggleEvent(value)">
+      <ion-icon [style.color]="value.color"
+                [name]="value.tempIntensity === 1 ? 'checkmark-circle' : 'radio-button-off'"></ion-icon>
+      <span style="margin-right: 15px;" [style.color]="value.color"><b>{{value.name}}</b></span>
+    </ion-chip>
+  </span>
 </ion-content>
 
 <ion-footer no-border>

@@ -3,8 +3,8 @@ import {NavController, ToastController} from 'ionic-angular';
 import * as moment from 'moment';
 import {NoteProvider} from '../../providers/note/note';
 import {PointProvider} from '../../providers/point/point';
-import {ValueProvider} from '../../providers/value/value';
-import {Note, Point, Value} from '../../domain/Symptom';
+import {ValueProvider} from '../../providers/value/valueProvider';
+import {Note, Point, Value, ValueType} from '../../domain/Symptom';
 
 @Component({
   selector: 'page-add',
@@ -12,6 +12,7 @@ import {Note, Point, Value} from '../../domain/Symptom';
 })
 export class AddPage implements OnInit{
 
+  ValueType = ValueType;
   values: Value[] = [];
   selectedDate = moment().format('YYYY-MM-DDTHH:mmZ');
 
@@ -60,5 +61,9 @@ export class AddPage implements OnInit{
       });
       toast.present();
     }
+  }
+
+  toggleEvent(value: Value) {
+    value.tempIntensity = value.tempIntensity ? null : 1;
   }
 }

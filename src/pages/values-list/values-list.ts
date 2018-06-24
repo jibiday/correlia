@@ -1,14 +1,16 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, ToastController} from 'ionic-angular';
 import {AddValuePage} from '../add-value/add-value';
-import {ValueProvider} from '../../providers/value/value';
-import {Value} from '../../domain/Symptom';
+import {ValueProvider} from '../../providers/value/valueProvider';
+import {Value, ValueType} from '../../domain/Symptom';
+import {AddEventOrIntervalPage} from "../add-event-or-interval/add-event-or-interval";
 
 @Component({
   selector: 'page-values-list',
   templateUrl: 'values-list.html',
 })
 export class ValuesListPage {
+  ValueType = ValueType;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private toastCtrl: ToastController,
@@ -23,6 +25,10 @@ export class ValuesListPage {
 
   addValue() {
     this.navCtrl.push(AddValuePage);
+  }
+
+  addEventOrInterval() {
+    this.navCtrl.push(AddEventOrIntervalPage);
   }
 
   remove(value: Value) {

@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Add new event or interval</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-label>
+      Name:
+    </ion-label>
+    <ion-input type="text" [(ngModel)]="name"></ion-input>
+  </ion-item>
+  <button ion-item
+          [cpPosition]="'bottom'"
+          [(colorPicker)]="color">
+    <ion-icon name="square" item-end large [style.color]="color"></ion-icon>
+    <ion-label>
+      Color: {{color}}
+    </ion-label>
+  </button>
+  <ion-list radio-group [(ngModel)]="type" *ngFor="let t of types">
+    <ion-item>
+      <ion-label>{{t}}</ion-label>
+      <ion-radio [disabled]="t != 'Event'" [value]="t"></ion-radio>
+    </ion-item>
+  </ion-list>
+
+  <ion-footer no-border>
+    <button ion-button block large (click)="save()">save</button>
+  </ion-footer>
+</ion-content>

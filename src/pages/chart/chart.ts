@@ -3,8 +3,8 @@ import {NavController} from 'ionic-angular';
 import * as Chart from 'chart.js';
 import * as moment from 'moment';
 import {PointProvider} from '../../providers/point/point';
-import {Point, Value} from '../../domain/Symptom';
-import {ValueProvider} from '../../providers/value/value';
+import {Point, Value, ValueType} from '../../domain/Symptom';
+import {ValueProvider} from '../../providers/value/valueProvider';
 
 @Component({
   selector: 'page-chart',
@@ -49,7 +49,7 @@ export class ChartPage implements OnInit {
           labels: {
             usePointStyle: true,
             filter: (legendItem) => {
-              return !legendItem.text.includes('(trend)');
+              return !legendItem.text.includes('(trend)') && !legendItem.text.includes('(event)');
             },
           },
           onClick: (e, legendItem) => {
@@ -141,16 +141,15 @@ export class ChartPage implements OnInit {
               gridLines: {
                 display: false
               },
-              id: 'dosage',
-              position: 'right',
+              id: 'event',
+              position: 'left',
               scaleLabel: {
                 display: false,
                 fontSize: 9,
-                labelString: 'dosage'
+                labelString: 'event'
               },
               ticks: {
-                display: false,
-                beginAtZero: true
+                display: false
               }
             }
           ]
@@ -163,6 +162,8 @@ export class ChartPage implements OnInit {
     this.myChart.options.scales.yAxes[1].ticks.suggestedMin = -5;
     this.myChart.options.scales.yAxes[1].ticks.suggestedMax = 10;
     this.myChart.options.scales.yAxes[1].ticks.stepSize = 1;
+    this.myChart.options.scales.yAxes[3].ticks.suggestedMin = 1;
+    this.myChart.options.scales.yAxes[3].ticks.suggestedMax = 2;
     this.datasets.forEach(dataset => {
       this.myChart.data.datasets.push({
         label: dataset.value.name,
@@ -264,6 +265,7 @@ export class ChartPage implements OnInit {
           })
         });
         this.createMovingAverageDatasets();
+        this.drawEvents();
         this.myChart.options.scales.xAxes[0].time.unit = unit;
         if (this.chartView.value !== ChartType.overall.value) {
           this.myChart.options.scales.xAxes[0].time.stepSize = 1;
@@ -278,7 +280,7 @@ export class ChartPage implements OnInit {
 
   createMovingAverageDatasets() {
     if (this.chartView === ChartType.month) {
-      this.datasets.filter(dataset => dataset.type === 'points').forEach(dataset => {
+      this.datasets.filter(dataset => dataset.value.type === ValueType.intensity).forEach(dataset => {
         let averagePoints = new Map<number, number[]>();
         dataset.points.forEach(point => {
           let dailyPoints = averagePoints.get(point.x.getDate());
@@ -295,7 +297,7 @@ export class ChartPage implements OnInit {
         dataset.points.sort((a, b) => a.millis - b.millis);
       })
     }
-    this.datasets.forEach(dataset => {
+    this.datasets.filter(dataset => dataset.value.type === ValueType.intensity).forEach(dataset => {
       let mADataset = new Dataset('MA');
       dataset.points.forEach((point, index, array) => {
         mADataset.value = dataset.value;
@@ -322,6 +324,34 @@ export class ChartPage implements OnInit {
         pointRadius: 0,
         fill: dataset.value.range.name === 'negative',
         borderWidth: 2,
+        yAxisID: dataset.value.range.name
+      });
+    });
+    this.myChart.data.datasets.sort((d1, d2) => d1.label < d2.label ? -1 : 1);
+    this.myChart.update();
+  }
+
+  drawEvents() {
+    this.datasets.filter(dataset => dataset.value.type === ValueType.event).forEach(dataset => {
+      let eventDataset = new Dataset('Events');
+      dataset.points.forEach((point, index, array) => {
+        eventDataset.value = dataset.value;
+        let evPoint = new Point(point.millis, point.y, point.valueId);
+        eventDataset.points.push(evPoint);
+        evPoint = new Point(point.millis, point.y + 1, point.valueId);
+        eventDataset.points.push(evPoint);
+        eventDataset.points.push(new Point(point.millis, null, point.valueId));
+      });
+      console.log(dataset.value.range.name);
+      this.myChart.data.datasets.push({
+        label: `${eventDataset.value.name} (event)`,
+        data: eventDataset.points,
+        backgroundColor: [
+          this.hexToRgba(eventDataset.value.color, 0.3)
+        ],
+        borderColor: [
+          this.hexToRgba(eventDataset.value.color, 0.5)
+        ],
         yAxisID: dataset.value.range.name
       });
     });

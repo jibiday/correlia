@@ -11,7 +11,8 @@
     <ion-item-sliding *ngFor="let value of values">
       <ion-item [style.color]="value.color">
         <b>{{ value.name }}</b>
-        <span>[{{ value.range.min }} ... {{value.range.max}}]</span>
+        <span *ngIf="value.type === ValueType.intensity">[{{ value.range.min }} ... {{value.range.max}}]</span>
+        <span *ngIf="value.type === ValueType.event || value.type === ValueType.interval">[{{value.type}}]</span>
       </ion-item>
       <ion-item-options side="left">
         <button icon-only color="secondary" ion-button>
@@ -26,8 +27,12 @@
     </ion-item-sliding>
   </ion-list>
   <ion-fab bottom right>
-    <button ion-fab (click)="addValue()">
+    <button ion-fab>
       <ion-icon name="add"></ion-icon>
     </button>
+    <ion-fab-list side="top">
+      <button ion-fab (click)="addValue()"><ion-icon name="thermometer"></ion-icon></button>
+      <button ion-fab (click)="addEventOrInterval()"><ion-icon name="stopwatch"></ion-icon></button>
+    </ion-fab-list>
   </ion-fab>
 </ion-content>
