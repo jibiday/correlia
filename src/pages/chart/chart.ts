@@ -229,7 +229,7 @@ export class ChartPage implements OnInit {
               displayFormat['day'] = 'ddd';
               break;
             case ChartType.month.value:
-              point.millis = moment({day: moment(point.x).date(), hour: moment(point.x).hour()}).valueOf();
+              point.millis = moment({day: moment(point.x).date()}).valueOf();
               unit = 'day';
               displayFormat['day'] = 'D';
               break;
@@ -260,7 +260,7 @@ export class ChartPage implements OnInit {
             ],
             showLine: false,
             fill: false,
-            borderWidth: 2,
+            pointRadius: dataset.value.type === ValueType.event ? 0 : 2,
             yAxisID: dataset.value.range.name
           })
         });
@@ -332,17 +332,17 @@ export class ChartPage implements OnInit {
   }
 
   drawEvents() {
-    this.datasets.filter(dataset => dataset.value.type === ValueType.event).forEach(dataset => {
+    let pointDatasets = this.datasets.filter(dataset => dataset.value.type === ValueType.event);
+    pointDatasets.forEach((dataset, datasetIndex) => {
       let eventDataset = new Dataset('Events');
       dataset.points.forEach((point, index, array) => {
         eventDataset.value = dataset.value;
-        let evPoint = new Point(point.millis, point.y, point.valueId);
+        let evPoint = new Point(point.millis, point.y + datasetIndex / pointDatasets.length, point.valueId);
         eventDataset.points.push(evPoint);
-        evPoint = new Point(point.millis, point.y + 1, point.valueId);
+        evPoint = new Point(point.millis, point.y + (datasetIndex + 1) / pointDatasets.length, point.valueId);
         eventDataset.points.push(evPoint);
         eventDataset.points.push(new Point(point.millis, null, point.valueId));
       });
-      console.log(dataset.value.range.name);
       this.myChart.data.datasets.push({
         label: `${eventDataset.value.name} (event)`,
         data: eventDataset.points,
@@ -350,7 +350,7 @@ export class ChartPage implements OnInit {
           this.hexToRgba(eventDataset.value.color, 0.3)
         ],
         borderColor: [
-          this.hexToRgba(eventDataset.value.color, 0.5)
+          this.hexToRgba(eventDataset.value.color, 0.8)
         ],
         yAxisID: dataset.value.range.name
       });
