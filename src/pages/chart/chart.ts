@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import * as Chart from 'chart.js';
+import 'chartjs-plugin-zoom';
 import * as moment from 'moment';
 import {PointProvider} from '../../providers/point/point';
 import {Point, Value, ValueType} from '../../domain/Symptom';
@@ -35,9 +36,28 @@ export class ChartPage implements OnInit {
     Chart.defaults.global.elements.point.hitRadius = 5;
     Chart.defaults.global.elements.point.radius = 1;
     this.ctx = 'myChart';
+    // @ts-ignore
     this.myChart = new Chart(this.ctx, {
       type: 'line',
       options: {
+        pan: {
+          // Boolean to enable panning
+          enabled: true,
+
+          // Panning directions. Remove the appropriate direction to disable
+          // Eg. 'y' would only allow panning in the y direction
+          mode: 'xy'
+        },
+
+        // Container for zoom options
+        zoom: {
+          // Boolean to enable zooming
+          enabled: true,
+
+          // Zooming directions. Remove the appropriate direction to disable
+          // Eg. 'y' would only allow zooming in the y direction
+          mode: 'xy',
+        },
         responsive: true,
         layout: {
           padding: {
@@ -156,7 +176,8 @@ export class ChartPage implements OnInit {
               }
             }
           ]
-        }
+        },
+
       }
     });
     this.myChart.options.scales.yAxes[0].ticks.suggestedMin = -5;
@@ -522,7 +543,7 @@ export class ChartType {
   value: string;
   title: string;
 
-  public static overall = new ChartType('overall', 'Overall');
+  public static overall = new ChartType('overall1', 'Overall111');
   public static day = new ChartType('day', 'Average per day');
   public static week = new ChartType('week', 'Average per week');
   public static month = new ChartType('month', 'Average per month');
