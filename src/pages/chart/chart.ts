@@ -36,17 +36,17 @@ export class ChartPage implements OnInit {
     Chart.defaults.global.elements.point.hitRadius = 5;
     Chart.defaults.global.elements.point.radius = 1;
     this.ctx = 'myChart';
-    // @ts-ignore
     this.myChart = new Chart(this.ctx, {
       type: 'line',
       options: {
+        // @ts-ignore
         pan: {
           // Boolean to enable panning
           enabled: true,
 
           // Panning directions. Remove the appropriate direction to disable
           // Eg. 'y' would only allow panning in the y direction
-          mode: 'xy'
+          mode: 'x'
         },
 
         // Container for zoom options
@@ -56,7 +56,7 @@ export class ChartPage implements OnInit {
 
           // Zooming directions. Remove the appropriate direction to disable
           // Eg. 'y' would only allow zooming in the y direction
-          mode: 'xy',
+          mode: 'x',
         },
         responsive: true,
         layout: {
@@ -115,7 +115,7 @@ export class ChartPage implements OnInit {
               id: 'intensity',
               position: 'left',
               gridLines: {
-                display: true,
+                display: false,
                 drawTicks: false
               },
               scaleLabel: {
@@ -123,17 +123,17 @@ export class ChartPage implements OnInit {
                 labelString: 'intensity'
               },
               ticks: {
-                display: true,
-                beginAtZero: true,
-                mirror: true,
-                padding: -5
+                display: false,
+                // beginAtZero: true,
+                // mirror: true,
+                // padding: -5
               }
             },
             {
               id: 'negative',
               position: 'left',
               gridLines: {
-                display: true,
+                display: false,
                 drawTicks: false
               },
               scaleLabel: {
