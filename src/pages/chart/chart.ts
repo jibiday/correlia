@@ -59,6 +59,7 @@ export class ChartPage implements OnInit {
           mode: 'x',
         },
         responsive: true,
+        maintainAspectRatio: false,
         layout: {
           padding: {
             top: 15
@@ -107,7 +108,8 @@ export class ChartPage implements OnInit {
             },
             ticks: {
               display: true,
-              maxRotation: 90
+              maxRotation: 90,
+              minRotation: 90
             }
           }],
           yAxes: [
@@ -174,20 +176,36 @@ export class ChartPage implements OnInit {
               ticks: {
                 display: false
               }
+            },
+            {
+              id: 'zero',
+              position: 'left',
+              gridLines: {
+                display: true
+              },
+              scaleLabel: {
+                display: false,
+                fontSize: 9,
+              },
+              ticks: {
+                display: true
+              }
             }
           ]
         },
 
       }
     });
-    this.myChart.options.scales.yAxes[0].ticks.suggestedMin = -5;
+    this.myChart.options.scales.yAxes[0].ticks.suggestedMin = -10;
     this.myChart.options.scales.yAxes[0].ticks.suggestedMax = 10;
     this.myChart.options.scales.yAxes[0].ticks.stepSize = 1;
-    this.myChart.options.scales.yAxes[1].ticks.suggestedMin = -5;
+    this.myChart.options.scales.yAxes[1].ticks.suggestedMin = -10;
     this.myChart.options.scales.yAxes[1].ticks.suggestedMax = 10;
     this.myChart.options.scales.yAxes[1].ticks.stepSize = 1;
     this.myChart.options.scales.yAxes[3].ticks.suggestedMin = 1;
     this.myChart.options.scales.yAxes[3].ticks.suggestedMax = 2;
+    this.myChart.options.scales.yAxes[4].ticks.suggestedMin = -10;
+    this.myChart.options.scales.yAxes[4].ticks.suggestedMax = 10;
     this.datasets.forEach(dataset => {
       this.myChart.data.datasets.push({
         label: dataset.value.name,
@@ -199,7 +217,7 @@ export class ChartPage implements OnInit {
           dataset.value.color
         ],
         fill: false,
-        borderWidth: 2,
+        borderWidth: 1,
         yAxisID: dataset.value.range.name
       })
     });
@@ -350,7 +368,7 @@ export class ChartPage implements OnInit {
         ],
         pointRadius: 0,
         fill: dataset.value.range.name === 'negative',
-        borderWidth: 2,
+        borderWidth: 1,
         yAxisID: dataset.value.range.name
       });
       // fake third one
@@ -365,7 +383,7 @@ export class ChartPage implements OnInit {
         ],
         pointRadius: 0,
         fill: dataset.value.range.name === 'negative',
-        borderWidth: 2,
+        borderWidth: 1,
         yAxisID: dataset.value.range.name
       });
     });
@@ -543,7 +561,7 @@ export class ChartType {
   value: string;
   title: string;
 
-  public static overall = new ChartType('overall1', 'Overall111');
+  public static overall = new ChartType('overall', 'Overall');
   public static day = new ChartType('day', 'Average per day');
   public static week = new ChartType('week', 'Average per week');
   public static month = new ChartType('month', 'Average per month');

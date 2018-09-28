@@ -1,11 +1,13 @@
 <ion-content style="height: 100%;" padding>
   <ion-segment [(ngModel)]="chartView">
     <ng-container *ngFor="let button of segmentButtons">
-    <ion-segment-button [value]="button" (click)="updateDatasets()">
-      {{button.value}}
-    </ion-segment-button>
+      <ion-segment-button [value]="button" (click)="updateDatasets()">
+        {{button.value}}
+      </ion-segment-button>
     </ng-container>
   </ion-segment>
   <h6 style="text-align: center">{{chartView.title}}</h6>
-  <canvas id="myChart" width="100%" height="100%"></canvas>
+  <div class="chart-container" style="height:80vh; width:90vw">
+    <canvas id="myChart"></canvas>
+  </div>
 </ion-content>
