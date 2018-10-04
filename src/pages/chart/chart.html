@@ -1,12 +1,16 @@
 <ion-content style="height: 100%;" padding>
   <ion-segment [(ngModel)]="chartView">
     <ng-container *ngFor="let button of segmentButtons">
-      <ion-segment-button [value]="button" (click)="updateDatasets()">
+      <ion-segment-button [disabled]="button.value !== 'overall'" [value]="button" (click)="updateDatasets()">
         {{button.value}}
       </ion-segment-button>
     </ng-container>
   </ion-segment>
-  <h6 style="text-align: center">{{chartView.title}}</h6>
+  <ion-fab right>
+    <button color="light" ion-fab mini (click)="resetZoom()">
+      <ion-icon name="refresh"></ion-icon>
+    </button>
+  </ion-fab>
   <div class="chart-container" style="height:80vh; width:90vw">
     <canvas id="myChart"></canvas>
   </div>

@@ -30,9 +30,13 @@
     <button ion-fab>
       <ion-icon name="add"></ion-icon>
     </button>
-    <ion-fab-list side="top">
-      <button ion-fab (click)="addValue()"><ion-icon name="thermometer"></ion-icon></button>
-      <button ion-fab (click)="addEventOrInterval()"><ion-icon name="stopwatch"></ion-icon></button>
+    <ion-fab-list side="left">
+      <button ion-button (click)="addValue()">
+        Value
+      </button>
+      <button ion-button (click)="addEventOrInterval()">
+        Event/Interval
+      </button>
     </ion-fab-list>
   </ion-fab>
 </ion-content>

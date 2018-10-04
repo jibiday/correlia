@@ -206,6 +206,7 @@ export class ChartPage implements OnInit {
     this.myChart.options.scales.yAxes[3].ticks.suggestedMax = 2;
     this.myChart.options.scales.yAxes[4].ticks.suggestedMin = -10;
     this.myChart.options.scales.yAxes[4].ticks.suggestedMax = 10;
+    this.myChart.options.scales.yAxes[4].ticks.stepSize = 1;
     this.datasets.forEach(dataset => {
       this.myChart.data.datasets.push({
         label: dataset.value.name,
@@ -544,6 +545,10 @@ export class ChartPage implements OnInit {
 
   ionViewWillEnter() {
     this.updateDatasets();
+  }
+
+  resetZoom() {
+    this.myChart.resetZoom();
   }
 }
 
