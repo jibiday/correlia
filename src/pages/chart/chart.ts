@@ -224,8 +224,9 @@ export class ChartPage implements OnInit {
         ],
         fill: false,
         borderWidth: 1,
-        yAxisID: dataset.value.range.name
-      })
+        yAxisID: dataset.value.range.name,
+        hidden: dataset.value.hidden
+      });
     });
     // this.drawPointLabels();
 
@@ -308,7 +309,8 @@ export class ChartPage implements OnInit {
             showLine: false,
             fill: false,
             pointRadius: dataset.value.type === ValueType.event || dataset.value.type === ValueType.interval ? 0 : 2,
-            yAxisID: dataset.value.range.name
+            yAxisID: dataset.value.range.name,
+            hidden: dataset.value.hidden
           })
         });
         this.createMovingAverageDatasets();
@@ -374,7 +376,8 @@ export class ChartPage implements OnInit {
         pointRadius: 0,
         fill: dataset.value.range.name === 'negative',
         borderWidth: 1,
-        yAxisID: dataset.value.range.name
+        yAxisID: dataset.value.range.name,
+        hidden: dataset.value.hidden
       });
       // fake third one
       this.myChart.data.datasets.push({
@@ -389,7 +392,8 @@ export class ChartPage implements OnInit {
         pointRadius: 0,
         fill: dataset.value.range.name === 'negative',
         borderWidth: 1,
-        yAxisID: dataset.value.range.name
+        yAxisID: dataset.value.range.name,
+        hidden: dataset.value.hidden
       });
     });
     this.myChart.data.datasets.sort((d1, d2) => d1.label < d2.label ? -1 : 1);
@@ -418,7 +422,8 @@ export class ChartPage implements OnInit {
           this.hexToRgba(eventDataset.value.color, 0.8)
         ],
         pointRadius: 0,
-        yAxisID: dataset.value.range.name
+        yAxisID: dataset.value.range.name,
+        hidden: dataset.value.hidden
       });
 
       // fake third one
@@ -432,7 +437,8 @@ export class ChartPage implements OnInit {
           this.hexToRgba(eventDataset.value.color, 0.8)
         ],
         pointRadius: 0,
-        yAxisID: dataset.value.range.name
+        yAxisID: dataset.value.range.name,
+        hidden: dataset.value.hidden
       });
     });
     this.myChart.data.datasets.sort((d1, d2) => d1.label < d2.label ? -1 : 1);
@@ -471,7 +477,8 @@ export class ChartPage implements OnInit {
         pointRadius: 0,
         borderWidth: 0.1,
         fill: '-1',
-        yAxisID: dataset.value.range.name
+        yAxisID: dataset.value.range.name,
+        hidden: dataset.value.hidden
       });
       this.myChart.data.datasets.push({
         label: `${intervalBottomDataset.value.name} (intervalBottom)`,
