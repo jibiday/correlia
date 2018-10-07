@@ -80,11 +80,16 @@ export class ChartPage implements OnInit {
             let i2 = i1 + 1;
             let i3 = i1 + 2;
             let ci = this.myChart;
+            let value = this.values.find((val) => val.id === ci.data.datasets[index].data[0].valueId);
+
+            let valueProvider = this.valueProvider;
             [ci.getDatasetMeta(i1),
               ci.getDatasetMeta(i2),
               ci.getDatasetMeta(i3)].forEach(function (meta) {
-              meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+              meta.hidden = !meta.hidden;
+              value.hidden = meta.hidden;
             });
+            valueProvider.update(value);
             ci.update();
           }
         },
@@ -108,8 +113,8 @@ export class ChartPage implements OnInit {
             },
             ticks: {
               display: true,
-              maxRotation: 90,
-              minRotation: 90
+              maxRotation: 0,
+              minRotation: 0
             }
           }],
           yAxes: [
@@ -222,7 +227,6 @@ export class ChartPage implements OnInit {
         yAxisID: dataset.value.range.name
       })
     });
-
     // this.drawPointLabels();
 
   }

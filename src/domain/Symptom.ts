@@ -19,6 +19,7 @@ export class Value {
   tempIntervalStart?: string;
   tempIntervalEnd?: string;
   range: Range;
+  hidden = null;
 }
 
 export enum ValueType {

@@ -17,6 +17,12 @@ export class ValueProvider {
     this.storage.set('values', this.values);
   }
 
+  update(value: Value) {
+    return this.remove(value.id).then(() => {
+      this.save(value);
+    })
+  }
+
   getAll() {
     return this.storage.get('values').then((values: Value[]) => {
       this.values = values !== null ? values : [];
