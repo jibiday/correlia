@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {NavController} from "ionic-angular";
+import {ActionSheetController, NavController} from "ionic-angular";
 import * as Chart from "chart.js";
 import "chartjs-plugin-zoom";
 import * as moment from "moment";
@@ -15,6 +15,7 @@ export class ChartPage implements OnInit {
 
   constructor(public navCtrl: NavController,
               private pointProvider: PointProvider,
+              public actionSheetCtrl: ActionSheetController,
               private valueProvider: ValueProvider) {
   }
 
@@ -82,15 +83,32 @@ export class ChartPage implements OnInit {
             let ci = this.myChart;
             let value = this.values.find((val) => val.id === ci.data.datasets[index].data[0].valueId);
 
-            let valueProvider = this.valueProvider;
-            [ci.getDatasetMeta(i1),
-              ci.getDatasetMeta(i2),
-              ci.getDatasetMeta(i3)].forEach(function (meta) {
-              meta.hidden = !meta.hidden;
-              value.hidden = meta.hidden;
+
+            let actionSheet = this.actionSheetCtrl.create({
+              title: `${value.name}`,
+              buttons: [
+                {
+                  text: value.hidden ? 'Show' : 'Hide',
+                  handler: () => {
+                    let valueProvider = this.valueProvider;
+                    [ci.getDatasetMeta(i1),
+                      ci.getDatasetMeta(i2),
+                      ci.getDatasetMeta(i3)].forEach(function (meta) {
+                      meta.hidden = !meta.hidden;
+                      value.hidden = meta.hidden;
+                    });
+                    valueProvider.update(value);
+                    ci.update();
+                  }
+                },
+                {
+                  text: 'Cancel',
+                  role: 'cancel',
+                }
+              ]
             });
-            valueProvider.update(value);
-            ci.update();
+
+            actionSheet.present();
           }
         },
         tooltips: {
