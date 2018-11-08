@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {NavController, NavParams, ToastController} from 'ionic-angular';
-import {AddValuePage} from '../add-value/add-value';
-import {ValueProvider} from '../../providers/value/valueProvider';
-import {Value, ValueType} from '../../domain/Symptom';
+import {Component} from "@angular/core";
+import {NavController, NavParams, ToastController} from "ionic-angular";
+import {AddValuePage} from "../add-value/add-value";
+import {ValueProvider} from "../../providers/value/valueProvider";
+import {Value, ValueType} from "../../domain/Symptom";
 import {AddEventOrIntervalPage} from "../add-event-or-interval/add-event-or-interval";
 
 @Component({
@@ -50,5 +50,11 @@ export class ValuesListPage {
     this.valueProvider.getAll().then(values => {
       this.values = values;
     })
+  }
+
+  edit(value: Value) {
+    if (value.type === ValueType.intensity) {
+      this.navCtrl.push(AddValuePage, {value});
+    }
   }
 }

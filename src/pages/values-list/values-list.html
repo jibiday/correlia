@@ -15,7 +15,7 @@
         <span *ngIf="value.type === ValueType.event || value.type === ValueType.interval">[{{value.type}}]</span>
       </ion-item>
       <ion-item-options side="left">
-        <button icon-only color="secondary" ion-button>
+        <button icon-only color="secondary" ion-button (click)="edit(value)">
           <ion-icon name="create"></ion-icon>
         </button>
       </ion-item-options>

@@ -42,6 +42,7 @@
     "cordova-sqlite-storage": "^2.3.2",
     "cordova-universal-links-plugin": "git+https://github.com/walteram/cordova-universal-links-plugin.git",
     "ionic-angular": "3.9.2",
+    "ionic2-material-icons": "^1.0.3",
     "ionicons": "3.0.0",
     "moment-with-locales-es6": "^1.0.1",
     "ngx-color-picker": "^6.3.3",
@@ -50,8 +51,12 @@
     "zone.js": "0.8.26"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "^3.1.11",
+    "@ionic/app-scripts": "3.2.0",
+    "node-sass": "^4.10.0",
     "typescript": "~2.6.2"
+  },
+  "config": {
+    "ionic_copy": "./copy.config.js"
   },
   "description": "An Ionic project",
   "cordova": {

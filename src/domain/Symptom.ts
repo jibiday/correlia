@@ -11,10 +11,12 @@ export class Note {
 
 export class Value {
   id: number;
+  groupId?: number;
   name: string;
   color: string;
   icon: string;
   type: ValueType;
+  isStepped = false;
   tempIntensity?: number;
   tempIntervalStart?: string;
   tempIntervalEnd?: string;
@@ -66,3 +68,18 @@ export class Range {
     this.max = max;
   }
 }
+
+// export class Line {
+//   name: string;
+//
+//   public static linear = new Line('linear');
+//   public static stepped = new Line('stepped');
+//
+//   static all() {
+//     return [Line.linear, Line.stepped];
+//   }
+//
+//   constructor(name: string) {
+//     this.name = name;
+//   }
+// }

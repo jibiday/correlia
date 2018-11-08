@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {NavController} from 'ionic-angular';
-import * as Chart from 'chart.js';
-import 'chartjs-plugin-zoom';
-import * as moment from 'moment';
-import {PointProvider} from '../../providers/point/point';
-import {Point, Value, ValueType} from '../../domain/Symptom';
-import {ValueProvider} from '../../providers/value/valueProvider';
+import {Component, OnInit} from "@angular/core";
+import {NavController} from "ionic-angular";
+import * as Chart from "chart.js";
+import "chartjs-plugin-zoom";
+import * as moment from "moment";
+import {PointProvider} from "../../providers/point/point";
+import {Point, Value, ValueType} from "../../domain/Symptom";
+import {ValueProvider} from "../../providers/value/valueProvider";
 
 @Component({
   selector: 'page-chart',
@@ -239,8 +239,8 @@ export class ChartPage implements OnInit {
       second: 'hh:mm',
       minute: 'hh:mm',
       hour: 'hh:mm',
-      day: 'MMM D',
-      week: 'll',
+      day: 'D MMM YY',
+      week: 'D MMM YY',
       month: 'MMM YYYY',
       year: 'YYYY'
     };
@@ -306,7 +306,9 @@ export class ChartPage implements OnInit {
             borderColor: [
               dataset.value.color
             ],
-            showLine: false,
+            borderWidth: 1,
+            showLine: dataset.value.isStepped,
+            steppedLine: dataset.value.isStepped,
             fill: false,
             pointRadius: dataset.value.type === ValueType.event || dataset.value.type === ValueType.interval ? 0 : 2,
             yAxisID: dataset.value.range.name,
@@ -325,6 +327,10 @@ export class ChartPage implements OnInit {
           this.myChart.options.scales.xAxes[0].time.stepSize = null;
         }
         this.myChart.options.scales.xAxes[0].time.displayFormats = displayFormat;
+
+        for (let i = 0; i < this.myChart.data.datasets.length; i++) {
+          this.myChart.getDatasetMeta(i).hidden = this.myChart.data.datasets[i].hidden;
+        }
         this.myChart.update();
       });
     });
@@ -349,7 +355,7 @@ export class ChartPage implements OnInit {
         dataset.points.sort((a, b) => a.millis - b.millis);
       })
     }
-    this.datasets.filter(dataset => dataset.value.type === ValueType.intensity).forEach(dataset => {
+    this.datasets.filter(dataset => dataset.value.type === ValueType.intensity && !dataset.value.isStepped).forEach(dataset => {
       let mADataset = new Dataset('MA');
       dataset.points.forEach((point, index, array) => {
         mADataset.value = dataset.value;
@@ -397,6 +403,10 @@ export class ChartPage implements OnInit {
       });
     });
     this.myChart.data.datasets.sort((d1, d2) => d1.label < d2.label ? -1 : 1);
+
+    for (let i = 0; i < this.myChart.data.datasets.length; i++) {
+      this.myChart.getDatasetMeta(i).hidden = this.myChart.data.datasets[i].hidden;
+    }
     this.myChart.update();
   }
 
@@ -559,6 +569,7 @@ export class ChartPage implements OnInit {
   }
 
   resetZoom() {
+    this.updateDatasets();
     this.myChart.resetZoom();
   }
 }
