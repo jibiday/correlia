@@ -25,10 +25,10 @@
     </ion-item-sliding>
   </ion-card>
 
-  <ion-card>
+  <ion-card *ngIf="grouped.intensities?.length > 0">
     <ion-card-header>Values:</ion-card-header>
     <ion-card-content>
-      <ion-list *ngFor="let value of values">
+      <ion-list *ngFor="let value of grouped.intensities">
         <ion-item *ngIf="value.type === ValueType.intensity" style="position:relative;" no-lines
                   [style.backgroundColor]="value.tempIntensity || value.tempIntensity === 0 ? '#ebeee5' : ''">
           <ion-label [style.color]="value.color" style="position:absolute;"><b>{{value.name}}</b></ion-label>
@@ -40,19 +40,19 @@
                         [name]="value.tempIntensity || value.tempIntensity === 0 ? 'trash' : 'body'"
                         (click)="value.tempIntensity = undefined"></ion-icon>
             </div>
-            <div style="width: 20px;" range-right>
-              <ion-icon [style.color]="value.color" large name="body"></ion-icon>
-            </div>
+            <b [style.color]="value.color" style="width: 20px;" range-right>
+              {{value.tempIntensity}}
+            </b>
           </ion-range>
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <ion-card *ngIf="grouped.events?.length > 0">
     <ion-card-header>Events:</ion-card-header>
     <ion-card-content>
-    <span *ngFor="let value of values">
+    <span *ngFor="let value of grouped.events">
   <ion-chip
     style="border: 1px solid lightgrey;"
     [style.backgroundColor]="value.tempIntensity || value.tempIntensity === 0 ? '#ebeee5' : 'white'"
@@ -66,11 +66,11 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <ion-card *ngIf="grouped.intervals?.length > 0">
     <ion-card-header>Intervals:</ion-card-header>
     <ion-card-content>
       <ion-grid>
-        <ion-row *ngFor="let value of values">
+        <ion-row *ngFor="let value of grouped.intervals">
           <ion-col col-12 *ngIf="value.type === ValueType.interval" style="text-align: center">
             <span [style.color]="value.color"><b>{{value.name}}</b></span>
           </ion-col>
