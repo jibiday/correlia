@@ -26,6 +26,19 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+<div *ngIf="values.length === 1" class="text-md-light hint swipe-hint">
+  <b>Swipe to</b>
+  <br>
+  <b>edit </b><ion-icon name="arrow-forward"></ion-icon>
+  <br>
+  <ion-icon name="arrow-back"></ion-icon><b> delete</b>
+</div>
+
+<div *ngIf="values.length === 0" class="text-md-light hint add-hint">
+  <b>Tap <ion-icon name="add-circle"></ion-icon> to add new value</b>
+</div>
+
   <ion-fab bottom right>
     <button ion-fab>
       <ion-icon name="add"></ion-icon>

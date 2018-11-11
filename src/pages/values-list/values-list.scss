@@ -1,3 +1,17 @@
 page-values-list {
 
+  .hint {
+    font-size: 50px;
+    text-align: center;
+    width: 80%;
+    margin: auto;
+
+    &.swipe-hint {
+      margin-top: 10%;
+    }
+    &.add-hint {
+      margin-top: 40%;
+    }
+  }
+
 }
