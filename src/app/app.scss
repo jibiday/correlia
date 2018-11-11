@@ -16,3 +16,17 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+.hint {
+  font-size: 50px;
+  text-align: center;
+  width: 80%;
+  margin: auto;
+  margin-top: 30%;
+
+  &.swipe-hint {
+    margin-top: 20%;
+  }
+  &.add-hint {
+    margin-top: 40%;
+  }
+}

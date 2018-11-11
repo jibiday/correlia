@@ -90,10 +90,17 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
+
+  <div *ngIf="values.length === 0" class="text-md-light hint">
+    <b>Add some values first</b>
+    <br>
+    <b>:)</b>
+  </div>
+
 </ion-content>
 
 <ion-footer no-border>
-  <button ion-button block large (click)="add()">
+  <button [disabled]="values.length === 0" ion-button block large (click)="add()">
     add note
   </button>
 </ion-footer>
