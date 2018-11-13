@@ -77,12 +77,9 @@ export class ChartPage implements OnInit {
           },
           onClick: (e, legendItem) => {
             let index = legendItem.datasetIndex;
-            let i1 = Math.floor(index / 3) * 3;
-            let i2 = i1 + 1;
-            let i3 = i1 + 2;
             let ci = this.myChart;
             let value = this.values.find((val) => val.id === ci.data.datasets[index].data[0].valueId);
-
+            let valueProvider = this.valueProvider;
 
             let actionSheet = this.actionSheetCtrl.create({
               title: `${value.name}`,
@@ -90,15 +87,21 @@ export class ChartPage implements OnInit {
                 {
                   text: value.hidden ? 'Show' : 'Hide',
                   handler: () => {
-                    let valueProvider = this.valueProvider;
-                    [ci.getDatasetMeta(i1),
-                      ci.getDatasetMeta(i2),
-                      ci.getDatasetMeta(i3)].forEach(function (meta) {
-                      meta.hidden = !meta.hidden;
-                      value.hidden = meta.hidden;
+                    value.hidden = !value.hidden;
+                    valueProvider.update(value).then(() => {
+                      this.updateDatasets();
+                      ci.update();
                     });
-                    valueProvider.update(value);
-                    ci.update();
+                  }
+                },
+                {
+                  text: value.isFilled ? "Don't fill" : 'Fill',
+                  handler: () => {
+                    value.isFilled = !value.isFilled;
+                    valueProvider.update(value).then(() => {
+                      this.updateDatasets();
+                      ci.update();
+                    });
                   }
                 },
                 {
@@ -149,9 +152,6 @@ export class ChartPage implements OnInit {
               },
               ticks: {
                 display: false,
-                // beginAtZero: true,
-                // mirror: true,
-                // padding: -5
               }
             },
             {
@@ -240,7 +240,7 @@ export class ChartPage implements OnInit {
         borderColor: [
           dataset.value.color
         ],
-        fill: false,
+        fill: dataset.value.isFilled,
         borderWidth: 1,
         yAxisID: dataset.value.range.name,
         hidden: dataset.value.hidden
@@ -327,7 +327,7 @@ export class ChartPage implements OnInit {
             borderWidth: 1,
             showLine: dataset.value.isStepped,
             steppedLine: dataset.value.isStepped,
-            fill: false,
+            fill: dataset.value.isFilled,
             pointRadius: dataset.value.type === ValueType.event || dataset.value.type === ValueType.interval ? 0 : 2,
             yAxisID: dataset.value.range.name,
             hidden: dataset.value.hidden
@@ -398,7 +398,7 @@ export class ChartPage implements OnInit {
           this.hexToRgba(mADataset.value.color, 0.5)
         ],
         pointRadius: 0,
-        fill: dataset.value.range.name === 'negative',
+        fill: dataset.value.isFilled,
         borderWidth: 1,
         yAxisID: dataset.value.range.name,
         hidden: dataset.value.hidden
@@ -414,7 +414,7 @@ export class ChartPage implements OnInit {
           this.hexToRgba(mADataset.value.color, 0.5)
         ],
         pointRadius: 0,
-        fill: dataset.value.range.name === 'negative',
+        fill: dataset.value.isFilled,
         borderWidth: 1,
         yAxisID: dataset.value.range.name,
         hidden: dataset.value.hidden

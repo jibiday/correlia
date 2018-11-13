@@ -16,6 +16,7 @@ export class AddValuePage {
   range = Range.intensity;
   ranges = Range.all();
   isStepped = false;
+  isFilled = false;
   editValue: Value;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -26,6 +27,7 @@ export class AddValuePage {
       this.name = this.editValue.name;
       this.color = this.editValue.color;
       this.isStepped = this.editValue.isStepped;
+      this.isFilled = this.editValue.isFilled;
     }
   }
 
@@ -40,6 +42,7 @@ export class AddValuePage {
     value.range = this.range;
     value.type = ValueType.intensity;
     value.isStepped = this.isStepped;
+    value.isFilled = this.isFilled;
     this.valueProvider.update(value).then(() => {
       let toast = this.toastCtrl.create({
         message: 'Value was saved successfully',

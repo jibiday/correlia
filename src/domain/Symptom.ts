@@ -17,6 +17,7 @@ export class Value {
   icon: string;
   type: ValueType;
   isStepped = false;
+  isFilled = false;
   tempIntensity?: number;
   tempIntervalStart?: string;
   tempIntervalEnd?: string;
