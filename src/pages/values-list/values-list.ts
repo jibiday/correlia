@@ -35,19 +35,20 @@ export class ValuesListPage {
     if (confirm('Rilie?')) {
       let tempName = value.name;
       this.valueProvider.remove(value.id).then(() => {
-        this.updateList();
-        let toast = this.toastCtrl.create({
-          message: `Value ${tempName} was successfully deleted`,
-          duration: 1500,
-          position: 'top'
+        this.updateList().then(() => {
+          let toast = this.toastCtrl.create({
+            message: `Value ${tempName} was successfully deleted`,
+            duration: 1500,
+            position: 'top'
+          });
+          toast.present();
         });
-        toast.present();
       });
     }
   }
 
   updateList() {
-    this.valueProvider.getAll().then(values => {
+    return this.valueProvider.getAll().then(values => {
       this.values = values;
     })
   }

@@ -40,13 +40,14 @@ export class AddValuePage {
     value.range = this.range;
     value.type = ValueType.intensity;
     value.isStepped = this.isStepped;
-    this.valueProvider.update(value);
-    let toast = this.toastCtrl.create({
-      message: 'Value was saved successfully',
-      duration: 1500,
-      position: 'top'
+    this.valueProvider.update(value).then(() => {
+      let toast = this.toastCtrl.create({
+        message: 'Value was saved successfully',
+        duration: 1500,
+        position: 'top'
+      });
+      toast.present();
+      this.navCtrl.pop();
     });
-    toast.present();
-    this.navCtrl.pop();
   }
 }
