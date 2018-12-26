@@ -19,6 +19,15 @@
       Color: {{color}}
     </ion-label>
   </button>
+
+  <ion-item (click)="toggled = !toggled"
+            [(emojiPickerIf)]="toggled"
+            [emojiPickerDirection]="'bottom'"
+            (emojiPickerSelect)="handleIconSelection($event)">
+    <ion-label>Icon</ion-label>
+    <span item-end>{{icon}}</span>
+  </ion-item>
+
   <ion-item>
     <ion-label>Range</ion-label>
     <ion-select [(ngModel)]="range" interface="popover">

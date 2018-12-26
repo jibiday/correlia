@@ -9,8 +9,8 @@
 <ion-content padding>
   <ion-list>
     <ion-item-sliding *ngFor="let value of values">
-      <ion-item [style.color]="value.color">
-        <b>{{ value.name }}</b>
+      <ion-item [style.color]="value.color" (click)="edit(value)">
+        <b>{{value.icon}} {{ value.name }}</b>
         <span *ngIf="value.type === ValueType.intensity">[{{ value.range.min }} ... {{value.range.max}}]</span>
         <span *ngIf="value.type === ValueType.event || value.type === ValueType.interval">[{{value.type}}]</span>
       </ion-item>

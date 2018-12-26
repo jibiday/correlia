@@ -31,13 +31,13 @@
       <ion-list *ngFor="let value of grouped.intensities">
         <ion-item *ngIf="value.type === ValueType.intensity" style="position:relative;" no-lines
                   [style.backgroundColor]="value.tempIntensity || value.tempIntensity === 0 ? '#ebeee5' : ''">
-          <ion-label [style.color]="value.color" style="position:absolute;"><b>{{value.name}}</b></ion-label>
+          <ion-label [style.color]="value.color" style="position:absolute;"><b>{{value.icon}} {{value.name}}</b></ion-label>
           <ion-range pin [min]="value.range.min" [max]="value.range.max" step="1"
                      [snaps]="value.range.max - value.range.min <= 20" [color]="'dark'"
                      [(ngModel)]="value.tempIntensity">
             <div style="width: 20px;" range-left>
               <ion-icon [style.color]="value.color" small
-                        [name]="value.tempIntensity || value.tempIntensity === 0 ? 'trash' : 'body'"
+                        [name]="value.tempIntensity || value.tempIntensity === 0 ? 'trash' : ''"
                         (click)="value.tempIntensity = undefined"></ion-icon>
             </div>
             <b [style.color]="value.color" style="width: 20px;" range-right>

@@ -18,6 +18,8 @@ export class AddValuePage {
   isStepped = false;
   isFilled = false;
   editValue: Value;
+  icon = '';
+  toggled = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private toastCtrl: ToastController,
@@ -28,10 +30,16 @@ export class AddValuePage {
       this.color = this.editValue.color;
       this.isStepped = this.editValue.isStepped;
       this.isFilled = this.editValue.isFilled;
+      this.icon = this.editValue.icon;
     }
   }
 
   ionViewDidLoad() {
+  }
+
+  handleIconSelection(event) {
+    this.icon = event.char;
+    this.toggled = false;
   }
 
   save() {
@@ -43,6 +51,7 @@ export class AddValuePage {
     value.type = ValueType.intensity;
     value.isStepped = this.isStepped;
     value.isFilled = this.isFilled;
+    value.icon = this.icon;
     this.valueProvider.update(value).then(() => {
       let toast = this.toastCtrl.create({
         message: 'Value was saved successfully',

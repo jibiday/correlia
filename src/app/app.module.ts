@@ -20,6 +20,8 @@ import {NoteProvider} from "../providers/note/note";
 import {PointProvider} from "../providers/point/point";
 import {AddEventOrIntervalPage} from "../pages/add-event-or-interval/add-event-or-interval";
 import {MaterialIconsModule} from "ionic2-material-icons";
+import {EmojiPickerModule} from "ionic-emoji-picker";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import {MaterialIconsModule} from "ionic2-material-icons";
   ],
   imports: [
     BrowserModule,
+    EmojiPickerModule.forRoot(),
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp, {
       modalEnter: 'modal-slide-in',
@@ -42,6 +45,7 @@ import {MaterialIconsModule} from "ionic2-material-icons";
       pageTransition: 'ios-transition'
     }),
     MaterialIconsModule,
+    FormsModule,
     ColorPickerModule
   ],
   bootstrap: [IonicApp],
