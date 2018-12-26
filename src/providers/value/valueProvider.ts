@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Storage} from '@ionic/storage'
-import {Value} from '../../domain/Symptom';
+import {Injectable} from "@angular/core";
+import {Storage} from "@ionic/storage";
+import {Value} from "../../domain/Symptom";
 
 @Injectable()
 export class ValueProvider {
@@ -18,8 +18,10 @@ export class ValueProvider {
   }
 
   update(value: Value) {
-    return this.remove(value.id).then(() => {
-      this.save(value);
+    return this.storage.get('values').then(values => {
+      let index = values.findIndex(val => val.id === value.id);
+      values[index] = value;
+      this.storage.set('values', values);
     })
   }
 

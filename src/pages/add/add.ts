@@ -34,8 +34,7 @@ export class AddPage implements OnInit{
   ionViewWillEnter() {
     this.selectedDate = moment().format('YYYY-MM-DDTHH:mmZ');
     this.valueProvider.getAll().then(values => {
-      this.values = this.values.concat(values.filter(newVal => !this.values.find(v => v.id === newVal.id)));
-      this.values = this.values.filter(deletedVal => values.find(v => v.id === deletedVal.id));
+      this.values = values;
       this.grouped.intensities = this.values.filter(val => val.type == ValueType.intensity);
       this.grouped.events = this.values.filter(val => val.type == ValueType.event);
       this.grouped.intervals = this.values.filter(val => val.type == ValueType.interval);
