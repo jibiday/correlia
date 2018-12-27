@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Add new value</ion-title>
+    <ion-title>{{isEditMode ? 'Edit value' : 'Add new value'}}</ion-title>
+    <ion-buttons right>
+      <button ion-button *ngIf="isEditMode" (click)="removeValue()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

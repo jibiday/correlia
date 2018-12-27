@@ -20,11 +20,14 @@ export class AddValuePage {
   editValue: Value;
   icon = '';
   toggled = false;
+  isEditMode = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private toastCtrl: ToastController,
               private valueProvider: ValueProvider) {
     if (this.navParams.get('value')) {
+
+      this.isEditMode = true;
       this.editValue = this.navParams.get('value');
       this.name = this.editValue.name;
       this.color = this.editValue.color;
@@ -42,9 +45,23 @@ export class AddValuePage {
     this.toggled = false;
   }
 
+  removeValue() {
+    if(confirm('Really?')) {
+      this.valueProvider.remove(this.editValue.id).then(() => {
+        let toast = this.toastCtrl.create({
+          message: 'Value was removed successfully',
+          duration: 1500,
+          position: 'top'
+        });
+        toast.present();
+        this.navCtrl.pop();
+      });
+    }
+  }
+
   save() {
     let value = this.editValue || new Value();
-    value.id = this.editValue ? this.editValue.id : new Date().valueOf();
+    value.id = this.editValue ? this.editValue.id : new Date().getTime();
     value.name = this.name;
     value.color = this.color;
     value.range = this.range;

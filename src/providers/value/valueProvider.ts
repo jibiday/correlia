@@ -20,8 +20,12 @@ export class ValueProvider {
   update(value: Value) {
     return this.storage.get('values').then(values => {
       let index = values.findIndex(val => val.id === value.id);
-      values[index] = value;
-      this.storage.set('values', values);
+      if (index === -1){
+        this.save(value)
+      } else {
+        values[index] = value;
+        this.storage.set('values', values);
+      }
     })
   }
 
