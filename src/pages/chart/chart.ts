@@ -72,7 +72,8 @@ export class ChartPage implements OnInit {
             usePointStyle: true,
             filter: (legendItem) => {
               return !legendItem.text.includes('(trend)') && !legendItem.text.includes('(event)') &&
-                !legendItem.text.includes('(intervalTop)') && !legendItem.text.includes('(intervalBottom)');
+                !legendItem.text.includes('(errl)') &&!legendItem.text.includes('(errh)')
+                &&!legendItem.text.includes('(intervalTop)') && !legendItem.text.includes('(intervalBottom)');
             },
           },
           onClick: (e, legendItem) => {
@@ -98,6 +99,16 @@ export class ChartPage implements OnInit {
                   text: value.isFilled ? "Don't fill" : 'Fill',
                   handler: () => {
                     value.isFilled = !value.isFilled;
+                    valueProvider.update(value).then(() => {
+                      this.updateDatasets();
+                      ci.update();
+                    });
+                  }
+                },
+                {
+                  text: value.isShowDeviation ? "Hide deviation" : 'Show deviation',
+                  handler: () => {
+                    value.isShowDeviation = !value.isShowDeviation;
                     valueProvider.update(value).then(() => {
                       this.updateDatasets();
                       ci.update();
@@ -355,37 +366,56 @@ export class ChartPage implements OnInit {
   }
 
   createMovingAverageDatasets() {
-    if (this.chartView === ChartType.month) {
-      this.datasets.filter(dataset => dataset.value.type === ValueType.intensity).forEach(dataset => {
-        let averagePoints = new Map<number, number[]>();
-        dataset.points.forEach(point => {
-          let dailyPoints = averagePoints.get(point.x.getDate());
-          if (dailyPoints) {
-            dailyPoints.push(point.y);
-          } else {
-            averagePoints.set(point.x.getDate(), [point.y]);
-          }
-        });
-        dataset.points = [];
-        averagePoints.forEach((v, k) => {
-          dataset.points.push(new Point(moment({date: k}).valueOf(), v.reduce((a, b) => a + b, 0) / v.length, dataset.value.id));
-        });
-        dataset.points.sort((a, b) => a.millis - b.millis);
-      })
-    }
+    // if (this.chartView === ChartType.month) {
+    //   this.datasets.filter(dataset => dataset.value.type === ValueType.intensity).forEach(dataset => {
+    //     let averagePoints = new Map<number, number[]>();
+    //     dataset.points.forEach(point => {
+    //       let dailyPoints = averagePoints.get(point.x.getDate());
+    //       if (dailyPoints) {
+    //         dailyPoints.push(point.y);
+    //       } else {
+    //         averagePoints.set(point.x.getDate(), [point.y]);
+    //       }
+    //     });
+    //     dataset.points = [];
+    //     averagePoints.forEach((v, k) => {
+    //       dataset.points.push(new Point(moment({date: k}).valueOf(), v.reduce((a, b) => a + b, 0) / v.length, dataset.value.id));
+    //     });
+    //     dataset.points.sort((a, b) => a.millis - b.millis);
+    //   })
+    // }
     this.datasets.filter(dataset => dataset.value.type === ValueType.intensity && !dataset.value.isStepped).forEach(dataset => {
       let mADataset = new Dataset('MA');
+      let elDataset = new Dataset('ErrorLow');
+      let ehDataset = new Dataset('ErrorHigh');
       dataset.points.forEach((point, index, array) => {
         mADataset.value = dataset.value;
+        elDataset.value = dataset.value;
+        ehDataset.value = dataset.value;
         if (index !== 0) {
           let mAMiddlePoint = new Point(point.millis, point.y, point.valueId);
           mAMiddlePoint.y = (array[index - 1].y + array[index].y) / 2;
           mAMiddlePoint.millis = (array[index - 1].millis + array[index].millis) / 2;
+          let errorHighY;
+          let errorLowY;
+          if (array[index - 1].y > mAMiddlePoint.y) {
+            errorHighY = array[index - 1].y;
+            errorLowY = array[index - 1].y - 2 * (array[index - 1].y - mAMiddlePoint.y)
+          } else {
+            errorLowY = array[index - 1].y;
+            errorHighY = array[index - 1].y - 2 * (array[index - 1].y - mAMiddlePoint.y)
+          }
+          let errorPointHigh = new Point(mAMiddlePoint.millis, errorHighY,  array[index - 1].valueId);
+          let errorPointLow = new Point(mAMiddlePoint.millis, errorLowY, point.valueId);
           mADataset.points.push(mAMiddlePoint);
+          elDataset.points.push(errorPointLow);
+          ehDataset.points.push(errorPointHigh);
         }
         if (index === 0 || index === array.length - 1) {
           let mAPoint = new Point(point.millis, point.y, point.valueId);
           mADataset.points.push(mAPoint);
+          elDataset.points.push(mAPoint);
+          ehDataset.points.push(mAPoint);
         }
       });
       this.myChart.data.datasets.push({
@@ -418,6 +448,36 @@ export class ChartPage implements OnInit {
         borderWidth: 1,
         yAxisID: dataset.value.range.name,
         hidden: dataset.value.hidden
+      });
+      this.myChart.data.datasets.push({
+        label: `${elDataset.value.name} (errl)`,
+        data: elDataset.points,
+        backgroundColor: [
+          this.hexToRgba(elDataset.value.color, 0.1)
+        ],
+        borderColor: [
+          this.hexToRgba(elDataset.value.color, 0.2)
+        ],
+        pointRadius: 0,
+        fill: 1,
+        borderWidth: 1,
+        yAxisID: dataset.value.range.name,
+        hidden: dataset.value.hidden || !dataset.value.isShowDeviation
+      });
+      this.myChart.data.datasets.push({
+        label: `${ehDataset.value.name} (errh)`,
+        data: ehDataset.points,
+        backgroundColor: [
+          this.hexToRgba(ehDataset.value.color, 0.1)
+        ],
+        borderColor: [
+          this.hexToRgba(ehDataset.value.color, 0.2)
+        ],
+        pointRadius: 0,
+        fill: 0,
+        borderWidth: 1,
+        yAxisID: dataset.value.range.name,
+        hidden: dataset.value.hidden || !dataset.value.isShowDeviation
       });
     });
     this.myChart.data.datasets.sort((d1, d2) => d1.label < d2.label ? -1 : 1);

@@ -18,6 +18,7 @@ export class Value {
   type: ValueType;
   isStepped = false;
   isFilled = false;
+  isShowDeviation = true;
   tempIntensity?: number;
   tempIntervalStart?: string;
   tempIntervalEnd?: string;
