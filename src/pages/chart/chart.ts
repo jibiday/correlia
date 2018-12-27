@@ -459,7 +459,7 @@ export class ChartPage implements OnInit {
           this.hexToRgba(elDataset.value.color, 0.2)
         ],
         pointRadius: 0,
-        fill: 1,
+        fill: '-1',
         borderWidth: 1,
         yAxisID: dataset.value.range.name,
         hidden: dataset.value.hidden || !dataset.value.isShowDeviation
@@ -474,7 +474,7 @@ export class ChartPage implements OnInit {
           this.hexToRgba(ehDataset.value.color, 0.2)
         ],
         pointRadius: 0,
-        fill: 0,
+        fill: '-1',
         borderWidth: 1,
         yAxisID: dataset.value.range.name,
         hidden: dataset.value.hidden || !dataset.value.isShowDeviation
