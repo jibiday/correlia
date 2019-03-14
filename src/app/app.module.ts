@@ -1,27 +1,28 @@
-import {ErrorHandler, NgModule} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
-import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
-import {MyApp} from "./app.component";
+import {ErrorHandler, NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
+import {MyApp} from './app.component';
 
-import {AddPage} from "../pages/add/add";
-import {ContactPage} from "../pages/contact/contact";
-import {ChartPage} from "../pages/chart/chart";
-import {TabsPage} from "../pages/tabs/tabs";
+import {AddPage} from '../pages/add/add';
+import {ContactPage} from '../pages/contact/contact';
+import {ChartPage} from '../pages/chart/chart';
+import {TabsPage} from '../pages/tabs/tabs';
 
-import {StatusBar} from "@ionic-native/status-bar";
-import {SplashScreen} from "@ionic-native/splash-screen";
-import {IonicStorageModule} from "@ionic/storage";
-import {AuthService} from "../services/authService";
-import {AddValuePage} from "../pages/add-value/add-value";
-import {ValuesListPage} from "../pages/values-list/values-list";
-import {ColorPickerModule} from "ngx-color-picker";
-import {ValueProvider} from "../providers/value/valueProvider";
-import {NoteProvider} from "../providers/note/note";
-import {PointProvider} from "../providers/point/point";
-import {AddEventOrIntervalPage} from "../pages/add-event-or-interval/add-event-or-interval";
-import {MaterialIconsModule} from "ionic2-material-icons";
-import {EmojiPickerModule} from "ionic-emoji-picker";
-import {FormsModule} from "@angular/forms";
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
+import {IonicStorageModule} from '@ionic/storage';
+import {AuthService} from '../services/authService';
+import {AddValuePage} from '../pages/add-value/add-value';
+import {ValuesListPage} from '../pages/values-list/values-list';
+import {ColorPickerModule} from 'ngx-color-picker';
+import {ValueProvider} from '../providers/value/valueProvider';
+import {NoteProvider} from '../providers/note/note';
+import {PointProvider} from '../providers/point/point';
+import {AddEventOrIntervalPage} from '../pages/add-event-or-interval/add-event-or-interval';
+import {MaterialIconsModule} from 'ionic2-material-icons';
+import {EmojiPickerModule} from 'ionic-emoji-picker';
+import {FormsModule} from '@angular/forms';
+import {AppMinimize} from '@ionic-native/app-minimize/ngx';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import {FormsModule} from "@angular/forms";
   ],
   providers: [
     StatusBar,
+    AppMinimize,
     SplashScreen,
     AuthService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
